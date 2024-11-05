@@ -11,7 +11,13 @@ import (
 	"tiktok_e-commence/common"
 )
 
-// 注册用户api
+// @Summary 注册用户api
+// @Tags 用户服务
+// @Accept json
+// @Produce json
+// @Param user body model.RegisterReq true "新增的用户信息"
+// @Success 200 {object} common.Response "注册成功"
+// @Router /user/register [post]
 func RegisterUserHandler(client model.UserServiceClient) gin.HandlerFunc {
 	return func(c *gin.Context) {
 		var req model.RegisterReq

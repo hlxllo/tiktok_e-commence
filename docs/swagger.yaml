@@ -1,0 +1,43 @@
+definitions:
+  common.Response:
+    properties:
+      code:
+        type: integer
+      data: {}
+      message:
+        type: string
+    type: object
+  model.RegisterReq:
+    properties:
+      confirm_password:
+        type: string
+      email:
+        type: string
+      password:
+        type: string
+    type: object
+info:
+  contact: {}
+paths:
+  /user/register:
+    post:
+      consumes:
+      - application/json
+      parameters:
+      - description: 新增的用户信息
+        in: body
+        name: user
+        required: true
+        schema:
+          $ref: '#/definitions/model.RegisterReq'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: 注册成功
+          schema:
+            $ref: '#/definitions/common.Response'
+      summary: 注册用户api
+      tags:
+      - 用户服务
+swagger: "2.0"

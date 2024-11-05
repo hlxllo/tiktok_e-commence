@@ -2,3 +2,10 @@ mysql:
   dsn: root:112358@tcp(127.0.0.1:3306)/tiktok_e-commence?charset=utf8mb4&parseTime=True&loc=Local
 redis:
   address: localhost:6379
+server:
+  service_name: user-server
+  ip: 127.0.0.1
+  port: 8080
+grpc:
+  ip: 127.0.0.1
+  port: 8000
