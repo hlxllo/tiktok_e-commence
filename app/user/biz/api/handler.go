@@ -50,3 +50,5 @@ func RegisterUserHandler(client model.UserServiceClient) gin.HandlerFunc {
 		common.HandleResponse(c, http.StatusOK, "success", resp)
 	}
 }
+
+// TODO 用户登录 api

@@ -1,6 +1,7 @@
 package server
 
 import (
+	"github.com/spf13/viper"
 	"google.golang.org/grpc"
 	"net"
 	"tiktok_e-commence/app/user/biz/model"
@@ -10,7 +11,8 @@ import (
 // 启动服务端
 func RunServer() {
 	// 开启端口
-	s, _ := net.Listen("tcp", ":8000")
+	grpcPort := viper.GetString("grpc.port")
+	s, _ := net.Listen("tcp", ":"+grpcPort)
 	// 创建grpc服务
 	server := grpc.NewServer()
 	// 注册服务

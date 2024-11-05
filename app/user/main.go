@@ -32,9 +32,9 @@ func main() {
 	fmt.Println(nc)
 	// 创建客户端连接
 	// 连接服务端，禁用安全传输
-	grpcClient := viper.GetString("grpc.ip") + ":" + viper.GetString("grpc.port")
-	fmt.Println(grpcClient)
-	conn, err := grpc.NewClient(grpcClient,
+	grpcAddr := viper.GetString("grpc.ip") + ":" + viper.GetString("grpc.port")
+	fmt.Println(grpcAddr)
+	conn, err := grpc.NewClient(grpcAddr,
 		grpc.WithTransportCredentials(insecure.NewCredentials()))
 	if err != nil {
 		panic(err)

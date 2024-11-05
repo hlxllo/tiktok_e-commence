@@ -27,6 +27,11 @@ func (s *UserServer) Register(c context.Context, req *model.RegisterReq) (*model
 }
 
 // TODO 实现 Login
-func (s *UserServer) Login(context.Context, *model.LoginReq) (*model.LoginResp, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method Register not implemented")
+func (s *UserServer) Login(c context.Context, req *model.LoginReq) (*model.LoginResp, error) {
+	user := &model.User{Email: req.Email, Password: req.Password}
+	userId, err := model.SelectUser(user)
+	if err != nil {
+		return nil, status.Errorf(codes.Unauthenticated, common.ErrLoginFailed)
+	}
+	return &model.LoginResp{UserId: int32(userId)}, nil
 }
