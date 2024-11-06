@@ -3,7 +3,7 @@ mysql:
 server:
   service_name: user-server
   ip: 127.0.0.1
-  port: 8080
-grpc:
-  ip: 127.0.0.1
   port: 8000
+gin:
+  ip: 127.0.0.1
+  port: 8080

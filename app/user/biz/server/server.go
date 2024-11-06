@@ -11,8 +11,8 @@ import (
 // 启动服务端
 func RunServer() {
 	// 开启端口
-	grpcPort := viper.GetString("grpc.port")
-	s, _ := net.Listen("tcp", ":"+grpcPort)
+	serverPort := viper.GetString("server.port")
+	s, _ := net.Listen("tcp", ":"+serverPort)
 	// 创建grpc服务
 	server := grpc.NewServer()
 	// 注册服务

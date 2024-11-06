@@ -13,6 +13,8 @@ type ClientConfig struct {
 	ServiceName string
 }
 
+var NacosClient naming_client.INamingClient
+
 func InitNacosClient(nc *ClientConfig) {
 	sc := []constant.ServerConfig{
 		*constant.NewServerConfig("localhost", 8848,
@@ -26,14 +28,14 @@ func InitNacosClient(nc *ClientConfig) {
 		constant.WithCacheDir("/tmp/nacos/cache"),
 	)
 	// 创建 Nacos 客户端
-	client, _ := clients.NewNamingClient(
+	NacosClient, _ = clients.NewNamingClient(
 		vo.NacosClientParam{
 			ClientConfig:  &cc,
 			ServerConfigs: sc,
 		},
 	)
 	// 注册服务
-	registerServiceInstance(client, vo.RegisterInstanceParam{
+	registerServiceInstance(NacosClient, vo.RegisterInstanceParam{
 		Ip:          nc.Ip,
 		Port:        uint64(nc.Port),
 		ServiceName: nc.ServiceName,
@@ -48,6 +50,6 @@ func InitNacosClient(nc *ClientConfig) {
 func registerServiceInstance(nacosClient naming_client.INamingClient, param vo.RegisterInstanceParam) {
 	success, err := nacosClient.RegisterInstance(param)
 	if !success || err != nil {
-		panic("register Service Instance failed!")
+		panic("注册实例失败！")
 	}
 }

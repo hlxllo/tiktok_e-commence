@@ -14,5 +14,7 @@ type AuthServer struct {
 
 // 实现 DeliverTokenByRPC
 func (s *AuthServer) DeliverTokenByRPC(c context.Context, req *model.DeliverTokenReq) (*model.DeliveryResp, error) {
+	email := c.Value("email")
+	password := c.Value("password")
 	return nil, status.Errorf(codes.Unimplemented, "method DeliverTokenByRPC not implemented")
 }

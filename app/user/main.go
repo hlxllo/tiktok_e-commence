@@ -1,7 +1,6 @@
 package main
 
 import (
-	"fmt"
 	"github.com/gin-gonic/gin"
 	"github.com/spf13/viper"
 	swaggerFiles "github.com/swaggo/files"
@@ -9,6 +8,7 @@ import (
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/credentials/insecure"
 	"log"
+	"strconv"
 	"tiktok_e-commence/app/user/biz/api"
 	"tiktok_e-commence/app/user/biz/dal"
 	"tiktok_e-commence/app/user/biz/model"
@@ -23,17 +23,19 @@ func main() {
 	// 启动服务端
 	go server.RunServer()
 	// 启动完 grpc 服务后立刻初始化nacos客户端
+	Ip := viper.GetString("server.ip")
+	Port := viper.GetInt("server.port")
+	ServiceName := viper.GetString("server.service_name")
 	nc := &common.ClientConfig{
-		Ip:          viper.GetString("server.ip"),
-		Port:        viper.GetInt("server.port"),
-		ServiceName: viper.GetString("server.service_name"),
+		Ip:          Ip,
+		Port:        Port,
+		ServiceName: ServiceName,
 	}
+	// 初始化nacos客户端
 	common.InitNacosClient(nc)
-	fmt.Println(nc)
-	// 创建客户端连接
+	// 创建 grpc 客户端连接
 	// 连接服务端，禁用安全传输
-	grpcAddr := viper.GetString("grpc.ip") + ":" + viper.GetString("grpc.port")
-	fmt.Println(grpcAddr)
+	grpcAddr := Ip + ":" + strconv.Itoa(Port)
 	conn, err := grpc.NewClient(grpcAddr,
 		grpc.WithTransportCredentials(insecure.NewCredentials()))
 	if err != nil {
@@ -54,10 +56,9 @@ func main() {
 		userGroup.POST("/login", api.LoginUserHandler(client))
 	}
 	// 启动 Gin 服务
-	serverPort := viper.GetString("server.port")
-	fmt.Println(serverPort)
-	log.Printf("Gin server listening on :%v", serverPort)
-	if err := engine.Run(":" + serverPort); err != nil {
+	ginPort := viper.GetString("gin.port")
+	log.Printf("Gin server listening on :%v", ginPort)
+	if err := engine.Run(":" + ginPort); err != nil {
 		log.Fatalf("Failed to run Gin server: %v", err)
 	}
 	// 阻塞
