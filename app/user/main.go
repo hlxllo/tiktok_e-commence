@@ -31,8 +31,10 @@ func main() {
 		Port:        Port,
 		ServiceName: ServiceName,
 	}
-	// 初始化nacos客户端
-	common.InitNacosClient(nc)
+	// TODO 将来写在网关里，初始化一次 nacos
+	common.InitNacosClient()
+	// 注册服务实例
+	common.RegisterToNacos(nc)
 	// 创建 grpc 客户端连接
 	// 连接服务端，禁用安全传输
 	grpcAddr := Ip + ":" + strconv.Itoa(Port)

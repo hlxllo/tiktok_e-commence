@@ -7,7 +7,7 @@ redis:
 server:
   service_name: auth-server
   ip: 127.0.0.1
-  port: 8081
-grpc:
-  ip: 127.0.0.1
   port: 8001
+gin:
+  ip: 127.0.0.1
+  port: 8081

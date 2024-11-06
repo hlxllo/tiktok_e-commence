@@ -12,6 +12,7 @@ const (
 	ErrInternalServer     = "服务器内部错误！"
 	ErrDeletionFailed     = "删除失败！"
 	ErrUpdateFailed       = "修改失败！"
+	ErrGenerateJWTFailed  = "生成令牌失败！"
 
 	MsgRegistrationSuccess = "注册成功！"
 	MsgSelectionSuccess    = "查询成功！"
