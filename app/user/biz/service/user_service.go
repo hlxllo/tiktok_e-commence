@@ -2,7 +2,6 @@ package service
 
 import (
 	"context"
-	"fmt"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
 	"tiktok_e-commence/app/user/biz/model"
@@ -33,7 +32,6 @@ func (s *UserServer) Register(c context.Context, req *model.RegisterReq) (*model
 func (s *UserServer) Login(c context.Context, req *model.LoginReq) (*model.LoginResp, error) {
 	user := &model.User{Email: req.Email, Password: req.Password}
 	userId, err := model.SelectUser(user)
-	fmt.Println(err)
 	if err != nil {
 		// 没有用户
 		return nil, status.Errorf(codes.NotFound, common.ErrLoginFailed)

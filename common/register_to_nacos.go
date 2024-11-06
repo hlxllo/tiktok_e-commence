@@ -5,18 +5,12 @@ import (
 	"github.com/nacos-group/nacos-sdk-go/vo"
 )
 
-type ClientConfig struct {
-	Ip          string
-	Port        int
-	ServiceName string
-}
-
-func RegisterToNacos(nc *ClientConfig) {
+func RegisterToNacos(Ip string, Port int, ServiceName string) {
 	// 注册服务
 	registerServiceInstance(NacosClient, vo.RegisterInstanceParam{
-		Ip:          nc.Ip,
-		Port:        uint64(nc.Port),
-		ServiceName: nc.ServiceName,
+		Ip:          Ip,
+		Port:        uint64(Port),
+		ServiceName: ServiceName,
 		Weight:      10,
 		Enable:      true,
 		Healthy:     true,

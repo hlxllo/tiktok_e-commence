@@ -26,20 +26,14 @@ func main() {
 	Ip := viper.GetString("server.ip")
 	Port := viper.GetInt("server.port")
 	ServiceName := viper.GetString("server.service_name")
-	nc := &common.ClientConfig{
-		Ip:          Ip,
-		Port:        Port,
-		ServiceName: ServiceName,
-	}
-	// TODO 将来写在网关里，初始化一次 nacos
+	// 初始化一次 nacos
 	common.InitNacosClient()
 	// 注册服务实例
-	common.RegisterToNacos(nc)
+	common.RegisterToNacos(Ip, Port, ServiceName)
 	// 创建 grpc 客户端连接
 	// 连接服务端，禁用安全传输
 	grpcAddr := Ip + ":" + strconv.Itoa(Port)
-	conn, err := grpc.NewClient(grpcAddr,
-		grpc.WithTransportCredentials(insecure.NewCredentials()))
+	conn, err := grpc.NewClient(grpcAddr, grpc.WithTransportCredentials(insecure.NewCredentials()))
 	if err != nil {
 		panic(err)
 	}
