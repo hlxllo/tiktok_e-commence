@@ -1,16 +1,9 @@
 package api
 
 import (
-	"fmt"
 	"github.com/gin-gonic/gin"
-	"github.com/nacos-group/nacos-sdk-go/vo"
-	"google.golang.org/grpc"
-	"google.golang.org/grpc/codes"
-	"google.golang.org/grpc/credentials/insecure"
-	"google.golang.org/grpc/status"
 	"log"
 	"net/http"
-	"strconv"
 	model2 "tiktok_e-commence/app/auth/biz/model"
 	"tiktok_e-commence/app/user/biz/model"
 	"tiktok_e-commence/common"
@@ -40,19 +33,7 @@ func RegisterUserHandler(client model.UserServiceClient) gin.HandlerFunc {
 		// 调用rpc注册用户
 		resp, err := client.Register(c, &req)
 		if err != nil {
-			st, ok := status.FromError(err)
-			if ok {
-				switch st.Code() {
-				case codes.InvalidArgument:
-					common.HandleResponse(c, http.StatusBadRequest, st.Message(), nil)
-				case codes.AlreadyExists:
-					common.HandleResponse(c, http.StatusBadRequest, st.Message(), nil)
-				default:
-					common.HandleResponse(c, http.StatusInternalServerError, st.Message(), nil)
-				}
-			} else {
-				common.HandleResponse(c, http.StatusInternalServerError, err.Error(), nil)
-			}
+			common.HandleError(c, err)
 			return
 		}
 		common.HandleResponse(c, http.StatusOK, "success", resp)
@@ -82,53 +63,23 @@ func LoginUserHandler(client model.UserServiceClient) gin.HandlerFunc {
 		// 调用rpc登录用户
 		resp, err := client.Login(c, &req)
 		if err != nil {
-			st, ok := status.FromError(err)
-			if ok {
-				switch st.Code() {
-				case codes.NotFound:
-					common.HandleResponse(c, http.StatusBadRequest, st.Message(), nil)
-				default:
-					common.HandleResponse(c, http.StatusInternalServerError, st.Message(), nil)
-				}
-			} else {
-				common.HandleResponse(c, http.StatusInternalServerError, err.Error(), nil)
-			}
+			common.HandleError(c, err)
 			return
 		}
-		instances, err := common.NacosClient.SelectOneHealthyInstance(vo.SelectOneHealthInstanceParam{
-			ServiceName: "auth-server",   // 注册到Nacos的服务名
-			GroupName:   "DEFAULT_GROUP", // 服务组名
-			//Clusters:    []string{"DEFAULT"}, // 集群名
-		})
-		fmt.Println(instances)
+		// 选择实例
+		instances, err := common.SelectHealthyInstance("auth-server")
 		if err != nil {
 			common.HandleResponse(c, http.StatusInternalServerError, common.ErrDiscoverServiceFailed, nil)
 			return
 		}
-		// 获取服务的地址和端口
-		grpcAddr := instances.Ip + ":" + strconv.Itoa(int(instances.Port))
-		fmt.Println("grpcAddr:", grpcAddr)
 		// 创建 grpc 客户端连接
-		conn, err := grpc.NewClient(grpcAddr, grpc.WithTransportCredentials(insecure.NewCredentials()))
-		if err != nil {
-			panic(err)
-		}
+		conn, err := common.CreateGRPCConn(instances.Ip, instances.Port)
 		defer conn.Close()
 		// 建立连接
 		authClient := model2.NewAuthServiceClient(conn)
 		delResp, err := authClient.DeliverTokenByRPC(c, &model2.DeliverTokenReq{UserId: resp.UserId})
 		if err != nil {
-			st, ok := status.FromError(err)
-			if ok {
-				switch st.Code() {
-				case codes.Internal:
-					common.HandleResponse(c, http.StatusInternalServerError, st.Message(), nil)
-				default:
-					common.HandleResponse(c, http.StatusInternalServerError, st.Message(), nil)
-				}
-			} else {
-				common.HandleResponse(c, http.StatusInternalServerError, err.Error(), nil)
-			}
+			common.HandleError(c, err)
 			return
 		}
 		common.HandleResponse(c, http.StatusOK, "success", delResp)
