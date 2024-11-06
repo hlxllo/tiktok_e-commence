@@ -2,6 +2,7 @@ package service
 
 import (
 	"context"
+	"fmt"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
 	"tiktok_e-commence/app/user/biz/model"
@@ -16,22 +17,26 @@ type UserServer struct {
 // 实现 Register
 func (s *UserServer) Register(c context.Context, req *model.RegisterReq) (*model.RegisterResp, error) {
 	if req.Password != req.ConfirmPassword {
+		// 参数错误
 		return nil, status.Errorf(codes.InvalidArgument, common.ErrPasswordMismatch)
 	}
 	user := &model.User{Email: req.Email, Password: req.Password}
 	userId, err := model.CreateUser(user)
 	if err != nil {
+		// 重复添加
 		return nil, status.Errorf(codes.AlreadyExists, common.ErrUserExists)
 	}
 	return &model.RegisterResp{UserId: int32(userId)}, nil
 }
 
-// TODO 实现 Login
+// 实现 Login
 func (s *UserServer) Login(c context.Context, req *model.LoginReq) (*model.LoginResp, error) {
 	user := &model.User{Email: req.Email, Password: req.Password}
 	userId, err := model.SelectUser(user)
+	fmt.Println(err)
 	if err != nil {
-		return nil, status.Errorf(codes.Unauthenticated, common.ErrLoginFailed)
+		// 没有用户
+		return nil, status.Errorf(codes.NotFound, common.ErrLoginFailed)
 	}
 	return &model.LoginResp{UserId: int32(userId)}, nil
 }

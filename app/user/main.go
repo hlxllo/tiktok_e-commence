@@ -42,14 +42,16 @@ func main() {
 	defer conn.Close()
 	// 建立连接
 	client := model.NewUserServiceClient(conn)
-	// 创建路由并分组注册
+	// 创建路由
 	engine := gin.Default()
 	// Swagger 配置
 	docs.SwaggerInfo.BasePath = ""
 	engine.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
+	// 路由分组
 	userGroup := engine.Group("/user")
 	{
 		userGroup.POST("/register", api.RegisterUserHandler(client))
+		userGroup.POST("/login", api.LoginUserHandler(client))
 	}
 	// 启动 Gin 服务
 	serverPort := viper.GetString("server.port")

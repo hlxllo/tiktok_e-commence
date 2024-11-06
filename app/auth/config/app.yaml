@@ -1,9 +1,13 @@
 mysql:
   dsn: root:112358@tcp(127.0.0.1:3306)/tiktok_e-commence?charset=utf8mb4&parseTime=True&loc=Local
+redis:
+  Addr: localhost:6379
+  Password : ""
+  DB: 0
 server:
-  service_name: user-server
+  service_name: auth-server
   ip: 127.0.0.1
-  port: 8080
+  port: 8081
 grpc:
   ip: 127.0.0.1
-  port: 8000
+  port: 8001

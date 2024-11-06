@@ -25,7 +25,8 @@ func CreateUser(user *User) (uint, error) {
 
 // 查询单个用户
 func SelectUser(user *User) (uint, error) {
-	result := mysql.DB.First(&user)
+	// 一定要加查询参数！！！
+	result := mysql.DB.Where("email = ? and password = ?", user.Email, user.Password).First(&user)
 	// 返回查询用户的主键
 	return user.ID, result.Error
 }

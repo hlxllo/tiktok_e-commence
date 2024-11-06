@@ -7,6 +7,13 @@ definitions:
       message:
         type: string
     type: object
+  model.LoginReq:
+    properties:
+      email:
+        type: string
+      password:
+        type: string
+    type: object
   model.RegisterReq:
     properties:
       confirm_password:
@@ -19,6 +26,27 @@ definitions:
 info:
   contact: {}
 paths:
+  /user/login:
+    post:
+      consumes:
+      - application/json
+      parameters:
+      - description: 登录的用户信息
+        in: body
+        name: user
+        required: true
+        schema:
+          $ref: '#/definitions/model.LoginReq'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: 登录成功
+          schema:
+            $ref: '#/definitions/common.Response'
+      summary: 登录用户api
+      tags:
+      - 用户服务
   /user/register:
     post:
       consumes:
