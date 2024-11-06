@@ -4,6 +4,7 @@ import (
 	"context"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
+	"gorm.io/gorm"
 	"tiktok_e-commence/app/user/biz/model"
 	"tiktok_e-commence/common"
 )
@@ -30,11 +31,22 @@ func (s *UserServer) Register(c context.Context, req *model.RegisterReq) (*model
 
 // 实现 Login
 func (s *UserServer) Login(c context.Context, req *model.LoginReq) (*model.LoginResp, error) {
-	user := &model.User{Email: req.Email, Password: req.Password}
-	userId, err := model.SelectUser(user)
+	queryUser := &model.User{Email: req.Email, Password: req.Password}
+	user, err := model.SelectUser(queryUser)
 	if err != nil {
 		// 没有用户
 		return nil, status.Errorf(codes.NotFound, common.ErrLoginFailed)
 	}
-	return &model.LoginResp{UserId: int32(userId)}, nil
+	return &model.LoginResp{UserId: int32(user.ID)}, nil
+}
+
+// 实现 GetUserInfo  TODO 待测试
+func (s *UserServer) GetUserInfo(c context.Context, req *model.GetUserInfoReq) (*model.GetUserInfoResp, error) {
+	queryUser := &model.User{Model: gorm.Model{ID: uint(req.UserId)}, Email: req.Email}
+	user, err := model.SelectUser(queryUser)
+	if err != nil {
+		// 没有用户
+		return nil, status.Errorf(codes.NotFound, common.ErrUserNotFound)
+	}
+	return &model.GetUserInfoResp{UserId: int32(user.ID), Email: user.Email}, nil
 }

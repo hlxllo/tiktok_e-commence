@@ -5,10 +5,7 @@ import (
 	"github.com/spf13/viper"
 	swaggerFiles "github.com/swaggo/files"
 	ginSwagger "github.com/swaggo/gin-swagger"
-	"google.golang.org/grpc"
-	"google.golang.org/grpc/credentials/insecure"
 	"log"
-	"strconv"
 	"tiktok_e-commence/app/user/biz/api"
 	"tiktok_e-commence/app/user/biz/dal"
 	"tiktok_e-commence/app/user/biz/model"
@@ -32,11 +29,7 @@ func main() {
 	common.RegisterToNacos(Ip, Port, ServiceName)
 	// 创建 grpc 客户端连接
 	// 连接服务端，禁用安全传输
-	grpcAddr := Ip + ":" + strconv.Itoa(Port)
-	conn, err := grpc.NewClient(grpcAddr, grpc.WithTransportCredentials(insecure.NewCredentials()))
-	if err != nil {
-		panic(err)
-	}
+	conn, _ := common.CreateGRPCConn(Ip, Port)
 	defer conn.Close()
 	// 建立连接
 	client := model.NewUserServiceClient(conn)

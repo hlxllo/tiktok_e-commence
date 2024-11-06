@@ -13,6 +13,7 @@ const (
 	ErrDeletionFailed        = "删除失败！"
 	ErrUpdateFailed          = "修改失败！"
 	ErrGenerateJWTFailed     = "生成令牌失败！"
+	ErrVerifyJWTFailed       = "验证令牌失败！"
 	ErrDiscoverServiceFailed = "发现服务失败！"
 	ErrFindEmailFailed       = "邮箱未找到！"
 

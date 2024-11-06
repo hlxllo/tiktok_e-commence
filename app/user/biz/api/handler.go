@@ -73,7 +73,7 @@ func LoginUserHandler(client model.UserServiceClient) gin.HandlerFunc {
 			return
 		}
 		// 创建 grpc 客户端连接
-		conn, err := common.CreateGRPCConn(instances.Ip, instances.Port)
+		conn, err := common.CreateGRPCConn(instances.Ip, int(instances.Port))
 		defer conn.Close()
 		// 建立连接
 		authClient := model2.NewAuthServiceClient(conn)

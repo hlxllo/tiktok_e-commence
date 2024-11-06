@@ -18,8 +18,6 @@ func HandleError(c *gin.Context, err error) {
 			HandleResponse(c, http.StatusBadRequest, st.Message(), nil)
 		case codes.NotFound:
 			HandleResponse(c, http.StatusBadRequest, st.Message(), nil)
-		case codes.Internal:
-			HandleResponse(c, http.StatusInternalServerError, st.Message(), nil)
 		default:
 			HandleResponse(c, http.StatusInternalServerError, st.Message(), nil)
 		}

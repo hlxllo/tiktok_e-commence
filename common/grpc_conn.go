@@ -7,8 +7,8 @@ import (
 )
 
 // 创建gRPC连接
-func CreateGRPCConn(Ip string, Port uint64) (*grpc.ClientConn, error) {
-	addr := Ip + ":" + strconv.Itoa(int(Port))
+func CreateGRPCConn(Ip string, Port int) (*grpc.ClientConn, error) {
+	addr := Ip + ":" + strconv.Itoa(Port)
 	conn, err := grpc.NewClient(addr, grpc.WithTransportCredentials(insecure.NewCredentials()))
 	if err != nil {
 		return nil, err
