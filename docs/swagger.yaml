@@ -7,6 +7,11 @@ definitions:
       message:
         type: string
     type: object
+  model.GetProductReq:
+    properties:
+      id:
+        type: integer
+    type: object
   model.ListProductsReq:
     properties:
       categoryName:
@@ -32,10 +37,30 @@ definitions:
       password:
         type: string
     type: object
-host: localhost:8080
 info:
   contact: {}
 paths:
+  /product/get:
+    post:
+      consumes:
+      - application/json
+      parameters:
+      - description: 查询的商品 id
+        in: body
+        name: user
+        required: true
+        schema:
+          $ref: '#/definitions/model.GetProductReq'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: 查询成功
+          schema:
+            $ref: '#/definitions/common.Response'
+      summary: 根据 id 查询商品api
+      tags:
+      - 商品服务
   /product/list:
     post:
       consumes:

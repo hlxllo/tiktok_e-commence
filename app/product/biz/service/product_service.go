@@ -4,6 +4,8 @@ import (
 	"context"
 	"encoding/json"
 	"github.com/jinzhu/copier"
+	"google.golang.org/grpc/codes"
+	"google.golang.org/grpc/status"
 	"tiktok_e-commence/app/product/biz/model"
 )
 
@@ -14,28 +16,44 @@ type ProductServer struct {
 
 // 实现 ListProducts
 func (s *ProductServer) ListProducts(c context.Context, req *model.ListProductsReq) (*model.ListProductsResp, error) {
-	productPos := model.SelectProductByCat(req.CategoryName, int(req.Page), int(req.PageSize))
+	pos := model.SelectProductByCat(req.CategoryName, int(req.Page), int(req.PageSize))
 	// 映射为返回类型
 	var products []*model.Product
 	//var categories pq.StringArray
-	for _, productPo := range productPos {
+	for _, po := range pos {
 		product := &model.Product{}
-		copier.Copy(product, productPo)
+		// 拷贝
+		copier.Copy(product, po)
 		// 反序列化 Categories 字段
 		var categories []string
-		json.Unmarshal(productPo.Categories, &categories)
+		json.Unmarshal(po.Categories, &categories)
 		product.Categories = categories
 		products = append(products, product)
 	}
 	return &model.ListProductsResp{Products: products}, nil
 }
 
-//// 实现 GetProduct
-//func (s *ProductServer) GetProduct(c context.Context, req *model.GetProductReq) (*model.GetProductResp, error) {
-//	return nil, status.Errorf(codes.Unimplemented, "method GetProduct not implemented")
-//}
-//
-//// 实现 SearchProducts
-//func (s *ProductServer) SearchProducts(c context.Context, req *model.SearchProductsReq) (*model.SearchProductsResp, error) {
-//	return nil, status.Errorf(codes.Unimplemented, "method SearchProducts not implemented")
-//}
+// 实现 GetProduct
+func (s *ProductServer) GetProduct(c context.Context, req *model.GetProductReq) (*model.GetProductResp, error) {
+	// 构造查询参数
+	po := &model.ProductPo{}
+	po.ID = uint(req.Id)
+	// 查询数据，取第一个
+	pos := model.SelectProducts(po)
+	if len(pos) > 0 {
+		po = pos[0]
+		product := &model.Product{}
+		copier.Copy(product, po)
+		// 反序列化 Categories 字段
+		var categories []string
+		json.Unmarshal(po.Categories, &categories)
+		product.Categories = categories
+		return &model.GetProductResp{Product: product}, nil
+	}
+	return &model.GetProductResp{}, nil
+}
+
+// 实现 SearchProducts TODO 不知道啥意思，先不写
+func (s *ProductServer) SearchProducts(c context.Context, req *model.SearchProductsReq) (*model.SearchProductsResp, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method SearchProducts not implemented")
+}

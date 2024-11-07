@@ -28,3 +28,10 @@ func SelectProductByCat(category string, page int, pageSize int) []*ProductPo {
 	// 找不到返回空
 	return products
 }
+
+// 根据 id 查询
+func SelectProducts(productPo *ProductPo) []*ProductPo {
+	var products []*ProductPo
+	mysql.DB.Where(productPo).Find(&products)
+	return products
+}

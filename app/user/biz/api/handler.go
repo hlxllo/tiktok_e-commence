@@ -36,7 +36,7 @@ func RegisterUserHandler(client model.UserServiceClient) gin.HandlerFunc {
 			common.HandleError(c, err)
 			return
 		}
-		common.HandleResponse(c, http.StatusOK, "success", resp)
+		common.HandleResponse(c, http.StatusOK, common.MsgSuccess, resp)
 	}
 }
 
@@ -82,6 +82,6 @@ func LoginUserHandler(client model.UserServiceClient) gin.HandlerFunc {
 			common.HandleError(c, err)
 			return
 		}
-		common.HandleResponse(c, http.StatusOK, "success", delResp)
+		common.HandleResponse(c, http.StatusOK, common.MsgSuccess, delResp)
 	}
 }

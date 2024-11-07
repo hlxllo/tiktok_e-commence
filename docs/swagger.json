@@ -3,8 +3,40 @@
     "info": {
         "contact": {}
     },
-    "host": "localhost:8080",
     "paths": {
+        "/product/get": {
+            "post": {
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "商品服务"
+                ],
+                "summary": "根据 id 查询商品api",
+                "parameters": [
+                    {
+                        "description": "查询的商品 id",
+                        "name": "user",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/model.GetProductReq"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "查询成功",
+                        "schema": {
+                            "$ref": "#/definitions/common.Response"
+                        }
+                    }
+                }
+            }
+        },
         "/product/list": {
             "post": {
                 "consumes": [
@@ -115,6 +147,14 @@
                 "data": {},
                 "message": {
                     "type": "string"
+                }
+            }
+        },
+        "model.GetProductReq": {
+            "type": "object",
+            "properties": {
+                "id": {
+                    "type": "integer"
                 }
             }
         },

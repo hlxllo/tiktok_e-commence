@@ -35,3 +35,31 @@ func ListProductsHandler(client model.ProductCatalogServiceClient) gin.HandlerFu
 		common.HandleResponse(c, http.StatusOK, common.MsgSuccess, resp)
 	}
 }
+
+// @Summary 根据 id 查询商品api
+// @Tags 商品服务
+// @Accept json
+// @Produce json
+// @Param user body model.GetProductReq true "查询的商品 id"
+// @Success 200 {object} common.Response "查询成功"
+// @Router /product/get [post]
+func GetProductHandler(client model.ProductCatalogServiceClient) gin.HandlerFunc {
+	return func(c *gin.Context) {
+		var req model.GetProductReq
+		// 绑定参数
+		err := c.ShouldBindJSON(&req)
+		if err != nil {
+			common.HandleResponse(c, http.StatusBadRequest, common.ErrInvalidParam, nil)
+			return
+		}
+		// 打印请求参数以便调试
+		log.Printf("Request: %+v", req)
+		// 调用rpc分页查询
+		resp, err := client.GetProduct(c, &req)
+		if err != nil {
+			common.HandleError(c, err)
+			return
+		}
+		common.HandleResponse(c, http.StatusOK, common.MsgSuccess, resp)
+	}
+}
