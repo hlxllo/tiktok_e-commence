@@ -7,6 +7,15 @@ definitions:
       message:
         type: string
     type: object
+  model.ListProductsReq:
+    properties:
+      categoryName:
+        type: string
+      page:
+        type: integer
+      pageSize:
+        type: integer
+    type: object
   model.LoginReq:
     properties:
       email:
@@ -23,9 +32,31 @@ definitions:
       password:
         type: string
     type: object
+host: localhost:8080
 info:
   contact: {}
 paths:
+  /product/list:
+    post:
+      consumes:
+      - application/json
+      parameters:
+      - description: 查询的商品和分页信息
+        in: body
+        name: user
+        required: true
+        schema:
+          $ref: '#/definitions/model.ListProductsReq'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: 查询成功
+          schema:
+            $ref: '#/definitions/common.Response'
+      summary: 分页查询商品api
+      tags:
+      - 商品服务
   /user/login:
     post:
       consumes:

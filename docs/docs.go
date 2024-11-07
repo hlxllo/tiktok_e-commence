@@ -15,6 +15,39 @@ const docTemplate = `{
     "host": "{{.Host}}",
     "basePath": "{{.BasePath}}",
     "paths": {
+        "/product/list": {
+            "post": {
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "商品服务"
+                ],
+                "summary": "分页查询商品api",
+                "parameters": [
+                    {
+                        "description": "查询的商品和分页信息",
+                        "name": "user",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/model.ListProductsReq"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "查询成功",
+                        "schema": {
+                            "$ref": "#/definitions/common.Response"
+                        }
+                    }
+                }
+            }
+        },
         "/user/login": {
             "post": {
                 "consumes": [
@@ -95,6 +128,20 @@ const docTemplate = `{
                 }
             }
         },
+        "model.ListProductsReq": {
+            "type": "object",
+            "properties": {
+                "categoryName": {
+                    "type": "string"
+                },
+                "page": {
+                    "type": "integer"
+                },
+                "pageSize": {
+                    "type": "integer"
+                }
+            }
+        },
         "model.LoginReq": {
             "type": "object",
             "properties": {
@@ -126,7 +173,7 @@ const docTemplate = `{
 // SwaggerInfo holds exported Swagger Info so clients can modify it
 var SwaggerInfo = &swag.Spec{
 	Version:          "",
-	Host:             "",
+	Host:             "localhost:8080",
 	BasePath:         "",
 	Schemes:          []string{},
 	Title:            "",

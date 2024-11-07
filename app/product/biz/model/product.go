@@ -1,8 +1,8 @@
 package model
 
 import (
-	"github.com/lib/pq"
 	"gorm.io/gorm"
+	"tiktok_e-commence/app/product/biz/dal/mysql"
 )
 
 type ProductPo struct {
@@ -11,9 +11,17 @@ type ProductPo struct {
 	Description string
 	Picture     string
 	Price       float32
-	Categories  pq.StringArray `gorm:"type:json"`
+	Categories  []byte `gorm:"type:json"`
 }
 
 func (table *ProductPo) TableName() string {
 	return "product"
+}
+
+// 根据类别查询
+func SelectProductByCat(category string) []*ProductPo {
+	var products []*ProductPo
+	mysql.DB.Where("JSON_CONTAINS(categories, ?)", `"`+category+`"`).Find(&products)
+	// 找不到返回空
+	return products
 }

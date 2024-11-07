@@ -22,4 +22,5 @@ const (
 	MsgDeletionSuccess     = "删除成功！"
 	MsgUpdateSuccess       = "修改成功！"
 	MsgLoginSuccess        = "登录成功！"
+	MsgSuccess             = "success"
 )

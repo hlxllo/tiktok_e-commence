@@ -9,7 +9,7 @@ import (
 // 读取配置并初始化数据库连接
 func Init() {
 	viper.SetConfigName("app")
-	viper.AddConfigPath("app/auth/config")
+	viper.AddConfigPath("app/product/config")
 	err := viper.ReadInConfig()
 	if err != nil {
 		panic(err)
