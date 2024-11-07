@@ -22,6 +22,10 @@ type GetCartReqCopy struct {
 	GetCartReq
 }
 
+type EmptyCartReqCopy struct {
+	EmptyCartReq
+}
+
 func (table *CartPo) TableName() string {
 	return "cart"
 }
@@ -37,4 +41,9 @@ func SelectCarts(po *CartPo) []*CartPo {
 	var carts []*CartPo
 	mysql.DB.Where(po).Find(&carts)
 	return carts
+}
+
+// 批量删除购物车
+func DeleteCarts(po *CartPo) {
+	mysql.DB.Where(po).Delete(&CartPo{})
 }

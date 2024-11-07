@@ -40,7 +40,40 @@ const docTemplate = `{
                 ],
                 "responses": {
                     "200": {
-                        "description": "查询成功",
+                        "description": "新增成功",
+                        "schema": {
+                            "$ref": "#/definitions/common.Response"
+                        }
+                    }
+                }
+            }
+        },
+        "/cart/delete": {
+            "post": {
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "购物车服务"
+                ],
+                "summary": "删除购物车api",
+                "parameters": [
+                    {
+                        "description": "查询的购物车信息",
+                        "name": "user",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/model.EmptyCartReqCopy"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "删除成功",
                         "schema": {
                             "$ref": "#/definitions/common.Response"
                         }
@@ -244,6 +277,14 @@ const docTemplate = `{
                 "item": {
                     "$ref": "#/definitions/app_cart_biz_model.CartItem"
                 },
+                "user_id": {
+                    "type": "integer"
+                }
+            }
+        },
+        "model.EmptyCartReqCopy": {
+            "type": "object",
+            "properties": {
                 "user_id": {
                     "type": "integer"
                 }

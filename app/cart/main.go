@@ -43,6 +43,7 @@ func main() {
 	{
 		cartGroup.POST("/create", api.AddItemHandler(client))
 		cartGroup.POST("/get", api.GetCartHandler(client))
+		cartGroup.POST("/delete", api.EmptyCartHandler(client))
 	}
 	// 启动 Gin 服务
 	ginPort := viper.GetString("gin.port")

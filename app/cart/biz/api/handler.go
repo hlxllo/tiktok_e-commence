@@ -13,7 +13,7 @@ import (
 // @Accept json
 // @Produce json
 // @Param user body model.AddItemReqCopy true "新增的购物车信息"
-// @Success 200 {object} common.Response "查询成功"
+// @Success 200 {object} common.Response "新增成功"
 // @Router /cart/create [post]
 func AddItemHandler(client model.CartServiceClient) gin.HandlerFunc {
 	return func(c *gin.Context) {
@@ -56,6 +56,34 @@ func GetCartHandler(client model.CartServiceClient) gin.HandlerFunc {
 		log.Printf("Request: %+v", req)
 		// 调用rpc
 		resp, err := client.GetCart(c, &req)
+		if err != nil {
+			common.HandleError(c, err)
+			return
+		}
+		common.HandleResponse(c, http.StatusOK, common.MsgSuccess, resp)
+	}
+}
+
+// @Summary 删除购物车api
+// @Tags 购物车服务
+// @Accept json
+// @Produce json
+// @Param user body model.EmptyCartReqCopy true "查询的购物车信息"
+// @Success 200 {object} common.Response "删除成功"
+// @Router /cart/delete [post]
+func EmptyCartHandler(client model.CartServiceClient) gin.HandlerFunc {
+	return func(c *gin.Context) {
+		var req model.EmptyCartReq
+		// 绑定参数
+		err := c.ShouldBindJSON(&req)
+		if err != nil {
+			common.HandleResponse(c, http.StatusBadRequest, common.ErrInvalidParam, nil)
+			return
+		}
+		// 打印请求参数以便调试
+		log.Printf("Request: %+v", req)
+		// 调用rpc
+		resp, err := client.EmptyCart(c, &req)
 		if err != nil {
 			common.HandleError(c, err)
 			return

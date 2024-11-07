@@ -45,5 +45,7 @@ func (s *CartServer) GetCart(c context.Context, req *model.GetCartReq) (*model.G
 
 // 实现 EmptyCart
 func (s *CartServer) EmptyCart(c context.Context, req *model.EmptyCartReq) (*model.EmptyCartResp, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method EmptyCart not implemented")
+	po := &model.CartPo{UserId: req.UserId}
+	model.DeleteCarts(po)
+	return &model.EmptyCartResp{}, nil
 }
