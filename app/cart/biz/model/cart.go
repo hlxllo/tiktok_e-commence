@@ -18,6 +18,10 @@ type AddItemReqCopy struct {
 	AddItemReq
 }
 
+type GetCartReqCopy struct {
+	GetCartReq
+}
+
 func (table *CartPo) TableName() string {
 	return "cart"
 }
@@ -26,4 +30,11 @@ func (table *CartPo) TableName() string {
 func CreateCart(po *CartPo) (uint, error) {
 	result := mysql.DB.Create(&po)
 	return po.ID, result.Error
+}
+
+// 批量查询购物车
+func SelectCarts(po *CartPo) []*CartPo {
+	var carts []*CartPo
+	mysql.DB.Where(po).Find(&carts)
+	return carts
 }

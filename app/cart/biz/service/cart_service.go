@@ -29,7 +29,18 @@ func (s *CartServer) AddItem(c context.Context, req *model.AddItemReq) (*model.A
 
 // 实现 GetCart
 func (s *CartServer) GetCart(c context.Context, req *model.GetCartReq) (*model.GetCartResp, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method GetCart not implemented")
+	po := &model.CartPo{UserId: req.UserId}
+	// 批量查询
+	cartPos := model.SelectCarts(po)
+	var items []*model.CartItem
+	for _, cartPo := range cartPos {
+		item := &model.CartItem{}
+		item.ProductId = cartPo.ProductId
+		item.Quantity = cartPo.Quantity
+		items = append(items, item)
+	}
+	resp := &model.Cart{UserId: req.UserId, Items: items}
+	return &model.GetCartResp{Cart: resp}, nil
 }
 
 // 实现 EmptyCart

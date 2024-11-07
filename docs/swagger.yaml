@@ -21,6 +21,11 @@ definitions:
       user_id:
         type: integer
     type: object
+  model.GetCartReqCopy:
+    properties:
+      user_id:
+        type: integer
+    type: object
   model.GetProductReq:
     properties:
       id:
@@ -73,6 +78,27 @@ paths:
           schema:
             $ref: '#/definitions/common.Response'
       summary: 新增购物车api
+      tags:
+      - 购物车服务
+  /cart/get:
+    post:
+      consumes:
+      - application/json
+      parameters:
+      - description: 查询的购物车信息
+        in: body
+        name: user
+        required: true
+        schema:
+          $ref: '#/definitions/model.GetCartReqCopy'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: 查询成功
+          schema:
+            $ref: '#/definitions/common.Response'
+      summary: 查询购物车api
       tags:
       - 购物车服务
   /product/get:

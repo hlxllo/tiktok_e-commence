@@ -48,6 +48,39 @@ const docTemplate = `{
                 }
             }
         },
+        "/cart/get": {
+            "post": {
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "购物车服务"
+                ],
+                "summary": "查询购物车api",
+                "parameters": [
+                    {
+                        "description": "查询的购物车信息",
+                        "name": "user",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/model.GetCartReqCopy"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "查询成功",
+                        "schema": {
+                            "$ref": "#/definitions/common.Response"
+                        }
+                    }
+                }
+            }
+        },
         "/product/get": {
             "post": {
                 "consumes": [
@@ -211,6 +244,14 @@ const docTemplate = `{
                 "item": {
                     "$ref": "#/definitions/app_cart_biz_model.CartItem"
                 },
+                "user_id": {
+                    "type": "integer"
+                }
+            }
+        },
+        "model.GetCartReqCopy": {
+            "type": "object",
+            "properties": {
                 "user_id": {
                     "type": "integer"
                 }
