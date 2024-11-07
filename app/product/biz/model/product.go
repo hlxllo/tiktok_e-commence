@@ -19,9 +19,12 @@ func (table *ProductPo) TableName() string {
 }
 
 // 根据类别查询
-func SelectProductByCat(category string) []*ProductPo {
+func SelectProductByCat(category string, page int, pageSize int) []*ProductPo {
 	var products []*ProductPo
-	mysql.DB.Where("JSON_CONTAINS(categories, ?)", `"`+category+`"`).Find(&products)
+	offset := (page - 1) * pageSize
+	query := "JSON_CONTAINS(categories, ?)"
+	args := `"` + category + `"`
+	mysql.DB.Where(query, args).Offset(offset).Limit(pageSize).Find(&products)
 	// 找不到返回空
 	return products
 }

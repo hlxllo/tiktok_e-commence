@@ -14,7 +14,7 @@ type ProductServer struct {
 
 // 实现 ListProducts
 func (s *ProductServer) ListProducts(c context.Context, req *model.ListProductsReq) (*model.ListProductsResp, error) {
-	productPos := model.SelectProductByCat(req.CategoryName)
+	productPos := model.SelectProductByCat(req.CategoryName, int(req.Page), int(req.PageSize))
 	// 映射为返回类型
 	var products []*model.Product
 	//var categories pq.StringArray
