@@ -15,6 +15,39 @@ const docTemplate = `{
     "host": "{{.Host}}",
     "basePath": "{{.BasePath}}",
     "paths": {
+        "/cart/create": {
+            "post": {
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "购物车服务"
+                ],
+                "summary": "新增购物车api",
+                "parameters": [
+                    {
+                        "description": "新增的购物车信息",
+                        "name": "user",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/model.AddItemReqCopy"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "查询成功",
+                        "schema": {
+                            "$ref": "#/definitions/common.Response"
+                        }
+                    }
+                }
+            }
+        },
         "/product/get": {
             "post": {
                 "consumes": [
@@ -149,6 +182,17 @@ const docTemplate = `{
         }
     },
     "definitions": {
+        "app_cart_biz_model.CartItem": {
+            "type": "object",
+            "properties": {
+                "product_id": {
+                    "type": "integer"
+                },
+                "quantity": {
+                    "type": "integer"
+                }
+            }
+        },
         "common.Response": {
             "type": "object",
             "properties": {
@@ -158,6 +202,17 @@ const docTemplate = `{
                 "data": {},
                 "message": {
                     "type": "string"
+                }
+            }
+        },
+        "model.AddItemReqCopy": {
+            "type": "object",
+            "properties": {
+                "item": {
+                    "$ref": "#/definitions/app_cart_biz_model.CartItem"
+                },
+                "user_id": {
+                    "type": "integer"
                 }
             }
         },

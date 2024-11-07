@@ -1,4 +1,11 @@
 definitions:
+  app_cart_biz_model.CartItem:
+    properties:
+      product_id:
+        type: integer
+      quantity:
+        type: integer
+    type: object
   common.Response:
     properties:
       code:
@@ -6,6 +13,13 @@ definitions:
       data: {}
       message:
         type: string
+    type: object
+  model.AddItemReqCopy:
+    properties:
+      item:
+        $ref: '#/definitions/app_cart_biz_model.CartItem'
+      user_id:
+        type: integer
     type: object
   model.GetProductReq:
     properties:
@@ -40,6 +54,27 @@ definitions:
 info:
   contact: {}
 paths:
+  /cart/create:
+    post:
+      consumes:
+      - application/json
+      parameters:
+      - description: 新增的购物车信息
+        in: body
+        name: user
+        required: true
+        schema:
+          $ref: '#/definitions/model.AddItemReqCopy'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: 查询成功
+          schema:
+            $ref: '#/definitions/common.Response'
+      summary: 新增购物车api
+      tags:
+      - 购物车服务
   /product/get:
     post:
       consumes:

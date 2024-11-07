@@ -1,14 +1,29 @@
 package model
 
-import "gorm.io/gorm"
+import (
+	"gorm.io/gorm"
+	"tiktok_e-commence/app/cart/biz/dal/mysql"
+)
 
 type CartPo struct {
 	gorm.Model
-	UserId    uint32
-	ProductId uint32 `gorm:"type:bigint unsigned"`
+	// 复合唯一约束
+	UserId    uint32 `gorm:"uniqueIndex:idx_user_product"`
+	ProductId uint32 `gorm:"type:bigint unsigned;uniqueIndex:idx_user_product"`
 	Quantity  int32
+}
+
+// 服了，神奇 bug TODO
+type AddItemReqCopy struct {
+	AddItemReq
 }
 
 func (table *CartPo) TableName() string {
 	return "cart"
+}
+
+// 新增购物车
+func CreateCart(po *CartPo) (uint, error) {
+	result := mysql.DB.Create(&po)
+	return po.ID, result.Error
 }

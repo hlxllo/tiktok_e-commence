@@ -4,6 +4,7 @@ package common
 const (
 	ErrInvalidParam          = "请求参数错误！"
 	ErrUserExists            = "用户已存在！"
+	ErrCartExists            = "购物车已存在！"
 	ErrUserNotFound          = "用户不存在！"
 	ErrPasswordMismatch      = "密码不一致！"
 	ErrUserCreationFailed    = "用户注册失败！"
