@@ -50,6 +50,17 @@ definitions:
       quantity:
         type: integer
     type: object
+  app_payment_biz_model.CreditCardInfo:
+    properties:
+      credit_card_cvv:
+        type: integer
+      credit_card_expiration_month:
+        type: integer
+      credit_card_expiration_year:
+        type: integer
+      credit_card_number:
+        type: string
+    type: object
   common.Response:
     properties:
       code:
@@ -62,6 +73,17 @@ definitions:
     properties:
       item:
         $ref: '#/definitions/app_cart_biz_model.CartItem'
+      user_id:
+        type: integer
+    type: object
+  model.ChargeReqCopy:
+    properties:
+      amount:
+        type: number
+      credit_card:
+        $ref: '#/definitions/app_payment_biz_model.CreditCardInfo'
+      order_id:
+        type: string
       user_id:
         type: integer
     type: object
@@ -304,6 +326,27 @@ paths:
       summary: 批量查询订单api
       tags:
       - 订单服务
+  /payment/create:
+    post:
+      consumes:
+      - application/json
+      parameters:
+      - description: 创建的支付信息
+        in: body
+        name: user
+        required: true
+        schema:
+          $ref: '#/definitions/model.ChargeReqCopy'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: 创建成功
+          schema:
+            $ref: '#/definitions/common.Response'
+      summary: 创建支付记录api
+      tags:
+      - 支付服务
   /product/get:
     post:
       consumes:

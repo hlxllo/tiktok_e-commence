@@ -235,6 +235,39 @@
                 }
             }
         },
+        "/payment/create": {
+            "post": {
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "支付服务"
+                ],
+                "summary": "创建支付记录api",
+                "parameters": [
+                    {
+                        "description": "创建的支付信息",
+                        "name": "user",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/model.ChargeReqCopy"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "创建成功",
+                        "schema": {
+                            "$ref": "#/definitions/common.Response"
+                        }
+                    }
+                }
+            }
+        },
         "/product/get": {
             "post": {
                 "consumes": [
@@ -448,6 +481,23 @@
                 }
             }
         },
+        "app_payment_biz_model.CreditCardInfo": {
+            "type": "object",
+            "properties": {
+                "credit_card_cvv": {
+                    "type": "integer"
+                },
+                "credit_card_expiration_month": {
+                    "type": "integer"
+                },
+                "credit_card_expiration_year": {
+                    "type": "integer"
+                },
+                "credit_card_number": {
+                    "type": "string"
+                }
+            }
+        },
         "common.Response": {
             "type": "object",
             "properties": {
@@ -465,6 +515,23 @@
             "properties": {
                 "item": {
                     "$ref": "#/definitions/app_cart_biz_model.CartItem"
+                },
+                "user_id": {
+                    "type": "integer"
+                }
+            }
+        },
+        "model.ChargeReqCopy": {
+            "type": "object",
+            "properties": {
+                "amount": {
+                    "type": "number"
+                },
+                "credit_card": {
+                    "$ref": "#/definitions/app_payment_biz_model.CreditCardInfo"
+                },
+                "order_id": {
+                    "type": "string"
                 },
                 "user_id": {
                     "type": "integer"
