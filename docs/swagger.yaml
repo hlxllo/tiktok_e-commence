@@ -77,6 +77,13 @@ definitions:
       password:
         type: string
     type: object
+  model.MarkOrderPaidReq:
+    properties:
+      order_id:
+        type: string
+      user_id:
+        type: integer
+    type: object
   model.OrderItem:
     properties:
       cost:
@@ -193,6 +200,27 @@ paths:
           schema:
             $ref: '#/definitions/common.Response'
       summary: 创建订单api
+      tags:
+      - 订单服务
+  /order/delete:
+    post:
+      consumes:
+      - application/json
+      parameters:
+      - description: 标记的订单信息
+        in: body
+        name: user
+        required: true
+        schema:
+          $ref: '#/definitions/model.MarkOrderPaidReq'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: 标记成功
+          schema:
+            $ref: '#/definitions/common.Response'
+      summary: 标记订单为已完成api
       tags:
       - 订单服务
   /order/list:

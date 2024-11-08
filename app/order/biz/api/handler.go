@@ -63,3 +63,31 @@ func ListOrderHandler(client model.OrderServiceClient) gin.HandlerFunc {
 		common.HandleResponse(c, http.StatusOK, common.MsgSuccess, resp)
 	}
 }
+
+// @Summary 标记订单为已完成api
+// @Tags 订单服务
+// @Accept json
+// @Produce json
+// @Param user body model.MarkOrderPaidReq true "标记的订单信息"
+// @Success 200 {object} common.Response "标记成功"
+// @Router /order/delete [post]
+func MarkOrderPaidHandler(client model.OrderServiceClient) gin.HandlerFunc {
+	return func(c *gin.Context) {
+		var req model.MarkOrderPaidReq
+		// 绑定参数
+		err := c.ShouldBindJSON(&req)
+		if err != nil {
+			common.HandleResponse(c, http.StatusBadRequest, common.ErrInvalidParam, nil)
+			return
+		}
+		// 打印请求参数以便调试
+		log.Printf("Request: %+v", req)
+		// 调用rpc分页查询
+		resp, err := client.MarkOrderPaid(c, &req)
+		if err != nil {
+			common.HandleError(c, err)
+			return
+		}
+		common.HandleResponse(c, http.StatusOK, common.MsgSuccess, resp)
+	}
+}

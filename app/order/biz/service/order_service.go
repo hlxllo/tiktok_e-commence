@@ -3,8 +3,6 @@ package service
 import (
 	"context"
 	"encoding/json"
-	"google.golang.org/grpc/codes"
-	"google.golang.org/grpc/status"
 	"strconv"
 	"tiktok_e-commence/app/order/biz/model"
 )
@@ -55,6 +53,10 @@ func (s *OrderServer) ListOrder(c context.Context, req *model.ListOrderReq) (*mo
 
 // 实现 MarkOrderPaid
 func (s *OrderServer) MarkOrderPaid(c context.Context, req *model.MarkOrderPaidReq) (*model.MarkOrderPaidResp, error) {
-
-	return nil, status.Errorf(codes.Unimplemented, "method MarkOrderPaid not implemented")
+	po := &model.OrderPo{}
+	orderId, _ := strconv.Atoi(req.OrderId)
+	po.ID = uint(orderId)
+	po.UserId = req.UserId
+	model.DeleteOrder(po)
+	return &model.MarkOrderPaidResp{}, nil
 }

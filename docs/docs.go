@@ -147,6 +147,39 @@ const docTemplate = `{
                 }
             }
         },
+        "/order/delete": {
+            "post": {
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "订单服务"
+                ],
+                "summary": "标记订单为已完成api",
+                "parameters": [
+                    {
+                        "description": "标记的订单信息",
+                        "name": "user",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/model.MarkOrderPaidReq"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "标记成功",
+                        "schema": {
+                            "$ref": "#/definitions/common.Response"
+                        }
+                    }
+                }
+            }
+        },
         "/order/list": {
             "post": {
                 "consumes": [
@@ -433,6 +466,17 @@ const docTemplate = `{
                 },
                 "password": {
                     "type": "string"
+                }
+            }
+        },
+        "model.MarkOrderPaidReq": {
+            "type": "object",
+            "properties": {
+                "order_id": {
+                    "type": "string"
+                },
+                "user_id": {
+                    "type": "integer"
                 }
             }
         },

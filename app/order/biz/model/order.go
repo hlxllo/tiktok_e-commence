@@ -30,3 +30,9 @@ func SelectOrders(queryPo *OrderPo) []*OrderPo {
 	mysql.DB.Where(queryPo).Find(&po)
 	return po
 }
+
+// 删除订单
+func DeleteOrder(po *OrderPo) uint {
+	result := mysql.DB.Delete(po)
+	return uint(result.RowsAffected)
+}
