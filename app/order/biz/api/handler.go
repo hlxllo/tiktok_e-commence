@@ -14,7 +14,7 @@ import (
 // @Produce json
 // @Param user body model.PlaceOrderReq true "创建的订单信息"
 // @Success 200 {object} common.Response "创建成功"
-// @Router /order/create [post]
+// @Router /order [post]
 func PlaceOrderHandler(client model.OrderServiceClient) gin.HandlerFunc {
 	return func(c *gin.Context) {
 		var req model.PlaceOrderReq
@@ -42,7 +42,7 @@ func PlaceOrderHandler(client model.OrderServiceClient) gin.HandlerFunc {
 // @Produce json
 // @Param user body model.ListOrderReq true "查询的订单信息"
 // @Success 200 {object} common.Response "查询成功"
-// @Router /order/list [post]
+// @Router /order [get]
 func ListOrderHandler(client model.OrderServiceClient) gin.HandlerFunc {
 	return func(c *gin.Context) {
 		var req model.ListOrderReq
@@ -70,7 +70,7 @@ func ListOrderHandler(client model.OrderServiceClient) gin.HandlerFunc {
 // @Produce json
 // @Param user body model.MarkOrderPaidReq true "标记的订单信息"
 // @Success 200 {object} common.Response "标记成功"
-// @Router /order/delete [post]
+// @Router /order [delete]
 func MarkOrderPaidHandler(client model.OrderServiceClient) gin.HandlerFunc {
 	return func(c *gin.Context) {
 		var req model.MarkOrderPaidReq

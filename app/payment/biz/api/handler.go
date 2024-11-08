@@ -14,7 +14,7 @@ import (
 // @Produce json
 // @Param user body model.ChargeReqCopy true "创建的支付信息"
 // @Success 200 {object} common.Response "创建成功"
-// @Router /payment/create [post]
+// @Router /payment [post]
 func ChargeHandler(client model.PaymentServiceClient) gin.HandlerFunc {
 	return func(c *gin.Context) {
 		var req model.ChargeReq

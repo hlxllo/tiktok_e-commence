@@ -20,7 +20,7 @@ func (table *OrderPo) TableName() string {
 
 // 新增订单
 func CreateOrder(po *OrderPo) (uint, error) {
-	result := mysql.DB.Create(po)
+	result := mysql.DB.Unscoped().Create(po)
 	return po.ID, result.Error
 }
 
@@ -33,6 +33,10 @@ func SelectOrders(queryPo *OrderPo) []*OrderPo {
 
 // 删除订单
 func DeleteOrder(po *OrderPo) uint {
+	var order OrderPo
+	if mysql.DB.Where(po).First(&order).Error != nil {
+		return 0
+	}
 	result := mysql.DB.Delete(po)
 	return uint(result.RowsAffected)
 }

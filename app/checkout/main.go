@@ -41,7 +41,7 @@ func main() {
 	// 路由分组
 	checkoutGroup := engine.Group("/checkout")
 	{
-		checkoutGroup.POST("/create", api.CheckoutHandler(client))
+		checkoutGroup.POST("", api.CheckoutHandler(client))
 	}
 	// 启动 Gin 服务
 	ginPort := viper.GetString("gin.port")

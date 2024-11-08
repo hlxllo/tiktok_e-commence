@@ -41,7 +41,7 @@ func main() {
 	// 路由分组
 	paymentGroup := engine.Group("/payment")
 	{
-		paymentGroup.POST("/create", api.ChargeHandler(client))
+		paymentGroup.POST("", api.ChargeHandler(client))
 	}
 	// 启动 Gin 服务
 	ginPort := viper.GetString("gin.port")

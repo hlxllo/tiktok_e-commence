@@ -14,7 +14,7 @@ import (
 // @Produce json
 // @Param user body model.ListProductsReq true "查询的商品和分页信息"
 // @Success 200 {object} common.Response "查询成功"
-// @Router /product/list [post]
+// @Router /product/list [get]
 func ListProductsHandler(client model.ProductCatalogServiceClient) gin.HandlerFunc {
 	return func(c *gin.Context) {
 		var req model.ListProductsReq
@@ -42,7 +42,7 @@ func ListProductsHandler(client model.ProductCatalogServiceClient) gin.HandlerFu
 // @Produce json
 // @Param user body model.GetProductReq true "查询的商品 id"
 // @Success 200 {object} common.Response "查询成功"
-// @Router /product/get [post]
+// @Router /product [get]
 func GetProductHandler(client model.ProductCatalogServiceClient) gin.HandlerFunc {
 	return func(c *gin.Context) {
 		var req model.GetProductReq

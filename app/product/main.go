@@ -41,8 +41,8 @@ func main() {
 	// 路由分组
 	productGroup := engine.Group("/product")
 	{
-		productGroup.POST("/list", api.ListProductsHandler(client))
-		productGroup.POST("/get", api.GetProductHandler(client))
+		productGroup.GET("/list", api.ListProductsHandler(client))
+		productGroup.GET("", api.GetProductHandler(client))
 	}
 	// 启动 Gin 服务
 	ginPort := viper.GetString("gin.port")

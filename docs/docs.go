@@ -15,7 +15,38 @@ const docTemplate = `{
     "host": "{{.Host}}",
     "basePath": "{{.BasePath}}",
     "paths": {
-        "/cart/create": {
+        "/cart": {
+            "get": {
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "购物车服务"
+                ],
+                "summary": "查询购物车api",
+                "parameters": [
+                    {
+                        "description": "查询的购物车信息",
+                        "name": "user",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/model.GetCartReqCopy"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "查询成功",
+                        "schema": {
+                            "$ref": "#/definitions/common.Response"
+                        }
+                    }
+                }
+            },
             "post": {
                 "consumes": [
                     "application/json"
@@ -46,10 +77,8 @@ const docTemplate = `{
                         }
                     }
                 }
-            }
-        },
-        "/cart/delete": {
-            "post": {
+            },
+            "delete": {
                 "consumes": [
                     "application/json"
                 ],
@@ -62,7 +91,7 @@ const docTemplate = `{
                 "summary": "删除购物车api",
                 "parameters": [
                     {
-                        "description": "查询的购物车信息",
+                        "description": "删除的购物车信息",
                         "name": "user",
                         "in": "body",
                         "required": true,
@@ -81,40 +110,7 @@ const docTemplate = `{
                 }
             }
         },
-        "/cart/get": {
-            "post": {
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "购物车服务"
-                ],
-                "summary": "查询购物车api",
-                "parameters": [
-                    {
-                        "description": "查询的购物车信息",
-                        "name": "user",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "$ref": "#/definitions/model.GetCartReqCopy"
-                        }
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "查询成功",
-                        "schema": {
-                            "$ref": "#/definitions/common.Response"
-                        }
-                    }
-                }
-            }
-        },
-        "/checkout/create": {
+        "/checkout": {
             "post": {
                 "consumes": [
                     "application/json"
@@ -147,7 +143,38 @@ const docTemplate = `{
                 }
             }
         },
-        "/order/create": {
+        "/order": {
+            "get": {
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "订单服务"
+                ],
+                "summary": "批量查询订单api",
+                "parameters": [
+                    {
+                        "description": "查询的订单信息",
+                        "name": "user",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/model.ListOrderReq"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "查询成功",
+                        "schema": {
+                            "$ref": "#/definitions/common.Response"
+                        }
+                    }
+                }
+            },
             "post": {
                 "consumes": [
                     "application/json"
@@ -178,10 +205,8 @@ const docTemplate = `{
                         }
                     }
                 }
-            }
-        },
-        "/order/delete": {
-            "post": {
+            },
+            "delete": {
                 "consumes": [
                     "application/json"
                 ],
@@ -213,40 +238,7 @@ const docTemplate = `{
                 }
             }
         },
-        "/order/list": {
-            "post": {
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "订单服务"
-                ],
-                "summary": "批量查询订单api",
-                "parameters": [
-                    {
-                        "description": "查询的订单信息",
-                        "name": "user",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "$ref": "#/definitions/model.ListOrderReq"
-                        }
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "查询成功",
-                        "schema": {
-                            "$ref": "#/definitions/common.Response"
-                        }
-                    }
-                }
-            }
-        },
-        "/payment/create": {
+        "/payment": {
             "post": {
                 "consumes": [
                     "application/json"
@@ -279,8 +271,8 @@ const docTemplate = `{
                 }
             }
         },
-        "/product/get": {
-            "post": {
+        "/product": {
+            "get": {
                 "consumes": [
                     "application/json"
                 ],
@@ -313,7 +305,7 @@ const docTemplate = `{
             }
         },
         "/product/list": {
-            "post": {
+            "get": {
                 "consumes": [
                     "application/json"
                 ],

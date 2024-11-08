@@ -32,7 +32,7 @@ func (table *CartPo) TableName() string {
 
 // 新增购物车
 func CreateCart(po *CartPo) (uint, error) {
-	result := mysql.DB.Create(&po)
+	result := mysql.DB.Unscoped().Create(&po)
 	return po.ID, result.Error
 }
 

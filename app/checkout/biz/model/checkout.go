@@ -21,6 +21,6 @@ func (table *CheckoutPo) TableName() string {
 
 // 创建结算信息
 func CreateCheckout(po *CheckoutPo) uint {
-	mysql.DB.Create(po)
+	mysql.DB.Unscoped().Create(po)
 	return po.ID
 }

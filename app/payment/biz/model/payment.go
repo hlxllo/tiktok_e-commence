@@ -23,6 +23,6 @@ func (table *PaymentPo) TableName() string {
 
 // 创建支付信息
 func CreatePayment(po *PaymentPo) uint {
-	mysql.DB.Create(po)
+	mysql.DB.Unscoped().Create(po)
 	return po.ID
 }

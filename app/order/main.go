@@ -41,9 +41,9 @@ func main() {
 	// 路由分组
 	orderGroup := engine.Group("/order")
 	{
-		orderGroup.POST("/create", api.PlaceOrderHandler(client))
-		orderGroup.POST("/list", api.ListOrderHandler(client))
-		orderGroup.POST("/delete", api.MarkOrderPaidHandler(client))
+		orderGroup.POST("", api.PlaceOrderHandler(client))
+		orderGroup.GET("", api.ListOrderHandler(client))
+		orderGroup.DELETE("", api.MarkOrderPaidHandler(client))
 	}
 	// 启动 Gin 服务
 	ginPort := viper.GetString("gin.port")

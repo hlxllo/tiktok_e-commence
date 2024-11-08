@@ -14,7 +14,7 @@ import (
 // @Produce json
 // @Param user body model.CheckoutReq true "创建的结算信息"
 // @Success 200 {object} common.Response "创建成功"
-// @Router /checkout/create [post]
+// @Router /checkout [post]
 func CheckoutHandler(client model.CheckoutServiceClient) gin.HandlerFunc {
 	return func(c *gin.Context) {
 		var req model.CheckoutReq
