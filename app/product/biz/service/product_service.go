@@ -19,7 +19,6 @@ func (s *ProductServer) ListProducts(c context.Context, req *model.ListProductsR
 	pos := model.SelectProductByCat(req.CategoryName, int(req.Page), int(req.PageSize))
 	// 映射为返回类型
 	var products []*model.Product
-	//var categories pq.StringArray
 	for _, po := range pos {
 		product := &model.Product{}
 		// 拷贝

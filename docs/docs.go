@@ -114,6 +114,39 @@ const docTemplate = `{
                 }
             }
         },
+        "/order/create": {
+            "post": {
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "订单服务"
+                ],
+                "summary": "创建订单api",
+                "parameters": [
+                    {
+                        "description": "创建的订单信息",
+                        "name": "user",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/model.PlaceOrderReq"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "创建成功",
+                        "schema": {
+                            "$ref": "#/definitions/common.Response"
+                        }
+                    }
+                }
+            }
+        },
         "/product/get": {
             "post": {
                 "consumes": [
@@ -259,6 +292,37 @@ const docTemplate = `{
                 }
             }
         },
+        "app_order_biz_model.Address": {
+            "type": "object",
+            "properties": {
+                "city": {
+                    "type": "string"
+                },
+                "country": {
+                    "type": "string"
+                },
+                "state": {
+                    "type": "string"
+                },
+                "street_address": {
+                    "type": "string"
+                },
+                "zip_code": {
+                    "type": "integer"
+                }
+            }
+        },
+        "app_order_biz_model.CartItem": {
+            "type": "object",
+            "properties": {
+                "product_id": {
+                    "type": "integer"
+                },
+                "quantity": {
+                    "type": "integer"
+                }
+            }
+        },
         "common.Response": {
             "type": "object",
             "properties": {
@@ -328,6 +392,40 @@ const docTemplate = `{
                 },
                 "password": {
                     "type": "string"
+                }
+            }
+        },
+        "model.OrderItem": {
+            "type": "object",
+            "properties": {
+                "cost": {
+                    "type": "number"
+                },
+                "item": {
+                    "$ref": "#/definitions/app_order_biz_model.CartItem"
+                }
+            }
+        },
+        "model.PlaceOrderReq": {
+            "type": "object",
+            "properties": {
+                "address": {
+                    "$ref": "#/definitions/app_order_biz_model.Address"
+                },
+                "email": {
+                    "type": "string"
+                },
+                "order_items": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/model.OrderItem"
+                    }
+                },
+                "user_currency": {
+                    "type": "string"
+                },
+                "user_id": {
+                    "type": "integer"
                 }
             }
         },

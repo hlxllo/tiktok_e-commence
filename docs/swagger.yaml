@@ -6,6 +6,26 @@ definitions:
       quantity:
         type: integer
     type: object
+  app_order_biz_model.Address:
+    properties:
+      city:
+        type: string
+      country:
+        type: string
+      state:
+        type: string
+      street_address:
+        type: string
+      zip_code:
+        type: integer
+    type: object
+  app_order_biz_model.CartItem:
+    properties:
+      product_id:
+        type: integer
+      quantity:
+        type: integer
+    type: object
   common.Response:
     properties:
       code:
@@ -51,6 +71,28 @@ definitions:
         type: string
       password:
         type: string
+    type: object
+  model.OrderItem:
+    properties:
+      cost:
+        type: number
+      item:
+        $ref: '#/definitions/app_order_biz_model.CartItem'
+    type: object
+  model.PlaceOrderReq:
+    properties:
+      address:
+        $ref: '#/definitions/app_order_biz_model.Address'
+      email:
+        type: string
+      order_items:
+        items:
+          $ref: '#/definitions/model.OrderItem'
+        type: array
+      user_currency:
+        type: string
+      user_id:
+        type: integer
     type: object
   model.RegisterReq:
     properties:
@@ -127,6 +169,27 @@ paths:
       summary: 查询购物车api
       tags:
       - 购物车服务
+  /order/create:
+    post:
+      consumes:
+      - application/json
+      parameters:
+      - description: 创建的订单信息
+        in: body
+        name: user
+        required: true
+        schema:
+          $ref: '#/definitions/model.PlaceOrderReq'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: 创建成功
+          schema:
+            $ref: '#/definitions/common.Response'
+      summary: 创建订单api
+      tags:
+      - 订单服务
   /product/get:
     post:
       consumes:
