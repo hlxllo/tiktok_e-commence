@@ -31,8 +31,26 @@ func (s *OrderServer) PlaceOrder(c context.Context, req *model.PlaceOrderReq) (*
 
 // 实现 ListOrder
 func (s *OrderServer) ListOrder(c context.Context, req *model.ListOrderReq) (*model.ListOrderResp, error) {
-
-	return nil, status.Errorf(codes.Unimplemented, "method ListOrder not implemented")
+	po := &model.OrderPo{}
+	po.UserId = req.UserId
+	orderPos := model.SelectOrders(po)
+	// 反序列化
+	var orders []*model.Order
+	for _, orderPo := range orderPos {
+		order := &model.Order{}
+		addr := &model.Address{}
+		var items []*model.OrderItem
+		json.Unmarshal(orderPo.Address, addr)
+		json.Unmarshal(orderPo.OrderItems, &items)
+		order.OrderId = strconv.Itoa(int(orderPo.ID))
+		order.UserId = orderPo.UserId
+		order.UserCurrency = orderPo.UserCurrency
+		order.Email = orderPo.Email
+		order.Address = addr
+		order.OrderItems = items
+		orders = append(orders, order)
+	}
+	return &model.ListOrderResp{Orders: orders}, nil
 }
 
 // 实现 MarkOrderPaid

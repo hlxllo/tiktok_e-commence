@@ -147,6 +147,39 @@ const docTemplate = `{
                 }
             }
         },
+        "/order/list": {
+            "post": {
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "订单服务"
+                ],
+                "summary": "批量查询订单api",
+                "parameters": [
+                    {
+                        "description": "查询的订单信息",
+                        "name": "user",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/model.ListOrderReq"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "查询成功",
+                        "schema": {
+                            "$ref": "#/definitions/common.Response"
+                        }
+                    }
+                }
+            }
+        },
         "/product/get": {
             "post": {
                 "consumes": [
@@ -366,6 +399,14 @@ const docTemplate = `{
             "type": "object",
             "properties": {
                 "id": {
+                    "type": "integer"
+                }
+            }
+        },
+        "model.ListOrderReq": {
+            "type": "object",
+            "properties": {
+                "user_id": {
                     "type": "integer"
                 }
             }

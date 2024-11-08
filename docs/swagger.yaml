@@ -56,6 +56,11 @@ definitions:
       id:
         type: integer
     type: object
+  model.ListOrderReq:
+    properties:
+      user_id:
+        type: integer
+    type: object
   model.ListProductsReq:
     properties:
       categoryName:
@@ -188,6 +193,27 @@ paths:
           schema:
             $ref: '#/definitions/common.Response'
       summary: 创建订单api
+      tags:
+      - 订单服务
+  /order/list:
+    post:
+      consumes:
+      - application/json
+      parameters:
+      - description: 查询的订单信息
+        in: body
+        name: user
+        required: true
+        schema:
+          $ref: '#/definitions/model.ListOrderReq'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: 查询成功
+          schema:
+            $ref: '#/definitions/common.Response'
+      summary: 批量查询订单api
       tags:
       - 订单服务
   /product/get:

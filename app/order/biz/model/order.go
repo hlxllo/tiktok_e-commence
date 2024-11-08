@@ -23,3 +23,10 @@ func CreateOrder(po *OrderPo) uint {
 	mysql.DB.Create(po)
 	return po.ID
 }
+
+// 查询订单
+func SelectOrders(queryPo *OrderPo) []*OrderPo {
+	var po []*OrderPo
+	mysql.DB.Where(queryPo).Find(&po)
+	return po
+}
