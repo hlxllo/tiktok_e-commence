@@ -3,8 +3,11 @@ package service
 import (
 	"context"
 	"encoding/json"
+	"google.golang.org/grpc/codes"
+	"google.golang.org/grpc/status"
 	"strconv"
 	"tiktok_e-commence/app/order/biz/model"
+	"tiktok_e-commence/common"
 )
 
 type OrderServer struct {
@@ -23,7 +26,10 @@ func (s *OrderServer) PlaceOrder(c context.Context, req *model.PlaceOrderReq) (*
 	po.Address = addr
 	po.OrderItems = items
 	// 创建订单
-	id := model.CreateOrder(po)
+	id, err := model.CreateOrder(po)
+	if err != nil {
+		return nil, status.Errorf(codes.AlreadyExists, common.ErrOrderExists)
+	}
 	return &model.PlaceOrderResp{Order: &model.OrderResult{OrderId: strconv.Itoa(int(id))}}, nil
 }
 

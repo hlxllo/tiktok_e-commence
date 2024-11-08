@@ -7,7 +7,7 @@ import (
 
 type OrderPo struct {
 	gorm.Model
-	UserId       uint32
+	UserId       uint32 `gorm:"unique"`
 	UserCurrency string
 	Email        string
 	Address      []byte `gorm:"type:json"`
@@ -19,9 +19,9 @@ func (table *OrderPo) TableName() string {
 }
 
 // 新增订单
-func CreateOrder(po *OrderPo) uint {
-	mysql.DB.Create(po)
-	return po.ID
+func CreateOrder(po *OrderPo) (uint, error) {
+	result := mysql.DB.Create(po)
+	return po.ID, result.Error
 }
 
 // 查询订单

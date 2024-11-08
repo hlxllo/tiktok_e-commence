@@ -1,0 +1,9 @@
+mysql:
+  dsn: root:112358@tcp(127.0.0.1:3306)/tiktok_e-commence?charset=utf8mb4&parseTime=True&loc=Local
+server:
+  service_name: checkout-server
+  ip: 127.0.0.1
+  port: 8005
+gin:
+  ip: 127.0.0.1
+  port: 8085

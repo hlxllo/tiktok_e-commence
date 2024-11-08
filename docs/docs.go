@@ -114,6 +114,39 @@ const docTemplate = `{
                 }
             }
         },
+        "/checkout/create": {
+            "post": {
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "结算服务"
+                ],
+                "summary": "创建结算记录api",
+                "parameters": [
+                    {
+                        "description": "创建的结算信息",
+                        "name": "user",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/model.CheckoutReq"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "创建成功",
+                        "schema": {
+                            "$ref": "#/definitions/common.Response"
+                        }
+                    }
+                }
+            }
+        },
         "/order/create": {
             "post": {
                 "consumes": [
@@ -358,6 +391,43 @@ const docTemplate = `{
                 }
             }
         },
+        "app_checkout_biz_model.Address": {
+            "type": "object",
+            "properties": {
+                "city": {
+                    "type": "string"
+                },
+                "country": {
+                    "type": "string"
+                },
+                "state": {
+                    "type": "string"
+                },
+                "street_address": {
+                    "type": "string"
+                },
+                "zip_code": {
+                    "type": "string"
+                }
+            }
+        },
+        "app_checkout_biz_model.CreditCardInfo": {
+            "type": "object",
+            "properties": {
+                "credit_card_cvv": {
+                    "type": "integer"
+                },
+                "credit_card_expiration_month": {
+                    "type": "integer"
+                },
+                "credit_card_expiration_year": {
+                    "type": "integer"
+                },
+                "credit_card_number": {
+                    "type": "string"
+                }
+            }
+        },
         "app_order_biz_model.Address": {
             "type": "object",
             "properties": {
@@ -406,6 +476,29 @@ const docTemplate = `{
             "properties": {
                 "item": {
                     "$ref": "#/definitions/app_cart_biz_model.CartItem"
+                },
+                "user_id": {
+                    "type": "integer"
+                }
+            }
+        },
+        "model.CheckoutReq": {
+            "type": "object",
+            "properties": {
+                "address": {
+                    "$ref": "#/definitions/app_checkout_biz_model.Address"
+                },
+                "credit_card": {
+                    "$ref": "#/definitions/app_checkout_biz_model.CreditCardInfo"
+                },
+                "email": {
+                    "type": "string"
+                },
+                "firstname": {
+                    "type": "string"
+                },
+                "lastname": {
+                    "type": "string"
                 },
                 "user_id": {
                     "type": "integer"

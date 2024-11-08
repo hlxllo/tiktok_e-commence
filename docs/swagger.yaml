@@ -6,6 +6,30 @@ definitions:
       quantity:
         type: integer
     type: object
+  app_checkout_biz_model.Address:
+    properties:
+      city:
+        type: string
+      country:
+        type: string
+      state:
+        type: string
+      street_address:
+        type: string
+      zip_code:
+        type: string
+    type: object
+  app_checkout_biz_model.CreditCardInfo:
+    properties:
+      credit_card_cvv:
+        type: integer
+      credit_card_expiration_month:
+        type: integer
+      credit_card_expiration_year:
+        type: integer
+      credit_card_number:
+        type: string
+    type: object
   app_order_biz_model.Address:
     properties:
       city:
@@ -38,6 +62,21 @@ definitions:
     properties:
       item:
         $ref: '#/definitions/app_cart_biz_model.CartItem'
+      user_id:
+        type: integer
+    type: object
+  model.CheckoutReq:
+    properties:
+      address:
+        $ref: '#/definitions/app_checkout_biz_model.Address'
+      credit_card:
+        $ref: '#/definitions/app_checkout_biz_model.CreditCardInfo'
+      email:
+        type: string
+      firstname:
+        type: string
+      lastname:
+        type: string
       user_id:
         type: integer
     type: object
@@ -181,6 +220,27 @@ paths:
       summary: 查询购物车api
       tags:
       - 购物车服务
+  /checkout/create:
+    post:
+      consumes:
+      - application/json
+      parameters:
+      - description: 创建的结算信息
+        in: body
+        name: user
+        required: true
+        schema:
+          $ref: '#/definitions/model.CheckoutReq'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: 创建成功
+          schema:
+            $ref: '#/definitions/common.Response'
+      summary: 创建结算记录api
+      tags:
+      - 结算服务
   /order/create:
     post:
       consumes:

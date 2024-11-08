@@ -5,6 +5,7 @@ const (
 	ErrInvalidParam          = "请求参数错误！"
 	ErrUserExists            = "用户已存在！"
 	ErrCartExists            = "购物车已存在！"
+	ErrOrderExists           = "订单已存在！"
 	ErrUserNotFound          = "用户不存在！"
 	ErrOrderNotFound         = "订单不存在！"
 	ErrPasswordMismatch      = "密码不一致！"
