@@ -45,7 +45,7 @@ func PlaceOrderHandler(serviceName string) gin.HandlerFunc {
 // @Produce json
 // @Param user body model.ListOrderReq true "查询的订单信息"
 // @Success 200 {object} common.Response "查询成功"
-// @Router /order [get]
+// @Router /order/list [post]
 func ListOrderHandler(serviceName string) gin.HandlerFunc {
 	return func(c *gin.Context) {
 		var req model.ListOrderReq

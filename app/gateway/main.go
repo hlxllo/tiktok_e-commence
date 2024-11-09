@@ -14,12 +14,16 @@ import (
 )
 
 func main() {
+	// 读取配置并初始化数据库连接
 	dal.Init()
 	Ip := viper.GetString("server.ip")
 	Port := viper.GetInt("server.port")
 	ServiceName := viper.GetString("server.service_name")
+	// 初始化nacos客户端
 	common.InitNacosClient()
+	// 注册服务实例
 	common.RegisterToNacos(Ip, Port, ServiceName)
+	// 创建路由
 	engine := gin.Default()
 	// swagger
 	docs.SwaggerInfo.BasePath = ""
@@ -36,8 +40,8 @@ func main() {
 	productGroup := engine.Group("/product")
 	{
 		serviceName = "product-server"
-		productGroup.GET("/list", api.ListProductsHandler(serviceName))
-		productGroup.GET("", api.GetProductHandler(serviceName))
+		productGroup.POST("/list", api.ListProductsHandler(serviceName))
+		productGroup.POST("", api.GetProductHandler(serviceName))
 	}
 	authServer := "auth-server"
 	engine.Use(middleware.AuthMiddleware(authServer))
@@ -46,7 +50,7 @@ func main() {
 	{
 		serviceName = "cart-server"
 		cartGroup.POST("", api.AddItemHandler(serviceName))
-		cartGroup.GET("", api.GetCartHandler(serviceName))
+		cartGroup.POST("/get", api.GetCartHandler(serviceName))
 		cartGroup.DELETE("", api.EmptyCartHandler(serviceName))
 	}
 	// 结算
@@ -60,7 +64,7 @@ func main() {
 	{
 		serviceName = "order-server"
 		orderGroup.POST("", api.PlaceOrderHandler(serviceName))
-		orderGroup.GET("", api.ListOrderHandler(serviceName))
+		orderGroup.POST("/list", api.ListOrderHandler(serviceName))
 		orderGroup.DELETE("", api.MarkOrderPaidHandler(serviceName))
 	}
 	// 支付
@@ -69,10 +73,12 @@ func main() {
 		serviceName = "payment-server"
 		paymentGroup.POST("", api.ChargeHandler(serviceName))
 	}
+	// 启动 Gin 服务
 	ginPort := viper.GetString("gin.port")
 	log.Printf("Gin 服务监听的端口 :%v", ginPort)
 	if err := engine.Run(":" + ginPort); err != nil {
 		log.Fatalf("启动 Gin 服务失败: %v", err)
 	}
+	// 阻塞
 	select {}
 }

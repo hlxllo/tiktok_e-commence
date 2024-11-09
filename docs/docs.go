@@ -16,37 +16,6 @@ const docTemplate = `{
     "basePath": "{{.BasePath}}",
     "paths": {
         "/cart": {
-            "get": {
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "购物车服务"
-                ],
-                "summary": "查询购物车api",
-                "parameters": [
-                    {
-                        "description": "查询的购物车信息",
-                        "name": "user",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "$ref": "#/definitions/model.GetCartReqCopy"
-                        }
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "查询成功",
-                        "schema": {
-                            "$ref": "#/definitions/common.Response"
-                        }
-                    }
-                }
-            },
             "post": {
                 "consumes": [
                     "application/json"
@@ -65,7 +34,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/model.AddItemReqCopy"
+                            "$ref": "#/definitions/model.AddItemReq"
                         }
                     }
                 ],
@@ -96,13 +65,46 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/model.EmptyCartReqCopy"
+                            "$ref": "#/definitions/model.EmptyCartReq"
                         }
                     }
                 ],
                 "responses": {
                     "200": {
                         "description": "删除成功",
+                        "schema": {
+                            "$ref": "#/definitions/common.Response"
+                        }
+                    }
+                }
+            }
+        },
+        "/cart/get": {
+            "post": {
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "购物车服务"
+                ],
+                "summary": "查询购物车api",
+                "parameters": [
+                    {
+                        "description": "查询的购物车信息",
+                        "name": "user",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/model.GetCartReq"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "查询成功",
                         "schema": {
                             "$ref": "#/definitions/common.Response"
                         }
@@ -144,37 +146,6 @@ const docTemplate = `{
             }
         },
         "/order": {
-            "get": {
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "订单服务"
-                ],
-                "summary": "批量查询订单api",
-                "parameters": [
-                    {
-                        "description": "查询的订单信息",
-                        "name": "user",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "$ref": "#/definitions/model.ListOrderReq"
-                        }
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "查询成功",
-                        "schema": {
-                            "$ref": "#/definitions/common.Response"
-                        }
-                    }
-                }
-            },
             "post": {
                 "consumes": [
                     "application/json"
@@ -238,6 +209,39 @@ const docTemplate = `{
                 }
             }
         },
+        "/order/list": {
+            "post": {
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "订单服务"
+                ],
+                "summary": "批量查询订单api",
+                "parameters": [
+                    {
+                        "description": "查询的订单信息",
+                        "name": "user",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/model.ListOrderReq"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "查询成功",
+                        "schema": {
+                            "$ref": "#/definitions/common.Response"
+                        }
+                    }
+                }
+            }
+        },
         "/payment": {
             "post": {
                 "consumes": [
@@ -257,7 +261,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/model.ChargeReqCopy"
+                            "$ref": "#/definitions/model.ChargeReq"
                         }
                     }
                 ],
@@ -272,7 +276,7 @@ const docTemplate = `{
             }
         },
         "/product": {
-            "get": {
+            "post": {
                 "consumes": [
                     "application/json"
                 ],
@@ -305,7 +309,7 @@ const docTemplate = `{
             }
         },
         "/product/list": {
-            "get": {
+            "post": {
                 "consumes": [
                     "application/json"
                 ],
@@ -405,102 +409,6 @@ const docTemplate = `{
         }
     },
     "definitions": {
-        "app_cart_biz_model.CartItem": {
-            "type": "object",
-            "properties": {
-                "product_id": {
-                    "type": "integer"
-                },
-                "quantity": {
-                    "type": "integer"
-                }
-            }
-        },
-        "app_checkout_biz_model.Address": {
-            "type": "object",
-            "properties": {
-                "city": {
-                    "type": "string"
-                },
-                "country": {
-                    "type": "string"
-                },
-                "state": {
-                    "type": "string"
-                },
-                "street_address": {
-                    "type": "string"
-                },
-                "zip_code": {
-                    "type": "string"
-                }
-            }
-        },
-        "app_checkout_biz_model.CreditCardInfo": {
-            "type": "object",
-            "properties": {
-                "credit_card_cvv": {
-                    "type": "integer"
-                },
-                "credit_card_expiration_month": {
-                    "type": "integer"
-                },
-                "credit_card_expiration_year": {
-                    "type": "integer"
-                },
-                "credit_card_number": {
-                    "type": "string"
-                }
-            }
-        },
-        "app_order_biz_model.Address": {
-            "type": "object",
-            "properties": {
-                "city": {
-                    "type": "string"
-                },
-                "country": {
-                    "type": "string"
-                },
-                "state": {
-                    "type": "string"
-                },
-                "street_address": {
-                    "type": "string"
-                },
-                "zip_code": {
-                    "type": "integer"
-                }
-            }
-        },
-        "app_order_biz_model.CartItem": {
-            "type": "object",
-            "properties": {
-                "product_id": {
-                    "type": "integer"
-                },
-                "quantity": {
-                    "type": "integer"
-                }
-            }
-        },
-        "app_payment_biz_model.CreditCardInfo": {
-            "type": "object",
-            "properties": {
-                "credit_card_cvv": {
-                    "type": "integer"
-                },
-                "credit_card_expiration_month": {
-                    "type": "integer"
-                },
-                "credit_card_expiration_year": {
-                    "type": "integer"
-                },
-                "credit_card_number": {
-                    "type": "string"
-                }
-            }
-        },
         "common.Response": {
             "type": "object",
             "properties": {
@@ -513,25 +421,56 @@ const docTemplate = `{
                 }
             }
         },
-        "model.AddItemReqCopy": {
+        "model.AddItemReq": {
             "type": "object",
             "properties": {
                 "item": {
-                    "$ref": "#/definitions/app_cart_biz_model.CartItem"
+                    "$ref": "#/definitions/model.CartItem"
                 },
                 "user_id": {
                     "type": "integer"
                 }
             }
         },
-        "model.ChargeReqCopy": {
+        "model.Address": {
+            "type": "object",
+            "properties": {
+                "city": {
+                    "type": "string"
+                },
+                "country": {
+                    "type": "string"
+                },
+                "state": {
+                    "type": "string"
+                },
+                "street_address": {
+                    "type": "string"
+                },
+                "zip_code": {
+                    "type": "integer"
+                }
+            }
+        },
+        "model.CartItem": {
+            "type": "object",
+            "properties": {
+                "product_id": {
+                    "type": "integer"
+                },
+                "quantity": {
+                    "type": "integer"
+                }
+            }
+        },
+        "model.ChargeReq": {
             "type": "object",
             "properties": {
                 "amount": {
                     "type": "number"
                 },
                 "credit_card": {
-                    "$ref": "#/definitions/app_payment_biz_model.CreditCardInfo"
+                    "$ref": "#/definitions/model.CreditCardInfo"
                 },
                 "order_id": {
                     "type": "string"
@@ -545,10 +484,10 @@ const docTemplate = `{
             "type": "object",
             "properties": {
                 "address": {
-                    "$ref": "#/definitions/app_checkout_biz_model.Address"
+                    "$ref": "#/definitions/model.Address"
                 },
                 "credit_card": {
-                    "$ref": "#/definitions/app_checkout_biz_model.CreditCardInfo"
+                    "$ref": "#/definitions/model.CreditCardInfo"
                 },
                 "email": {
                     "type": "string"
@@ -564,7 +503,24 @@ const docTemplate = `{
                 }
             }
         },
-        "model.EmptyCartReqCopy": {
+        "model.CreditCardInfo": {
+            "type": "object",
+            "properties": {
+                "credit_card_cvv": {
+                    "type": "integer"
+                },
+                "credit_card_expiration_month": {
+                    "type": "integer"
+                },
+                "credit_card_expiration_year": {
+                    "type": "integer"
+                },
+                "credit_card_number": {
+                    "type": "string"
+                }
+            }
+        },
+        "model.EmptyCartReq": {
             "type": "object",
             "properties": {
                 "user_id": {
@@ -572,7 +528,7 @@ const docTemplate = `{
                 }
             }
         },
-        "model.GetCartReqCopy": {
+        "model.GetCartReq": {
             "type": "object",
             "properties": {
                 "user_id": {
@@ -639,7 +595,7 @@ const docTemplate = `{
                     "type": "number"
                 },
                 "item": {
-                    "$ref": "#/definitions/app_order_biz_model.CartItem"
+                    "$ref": "#/definitions/model.CartItem"
                 }
             }
         },
@@ -647,7 +603,7 @@ const docTemplate = `{
             "type": "object",
             "properties": {
                 "address": {
-                    "$ref": "#/definitions/app_order_biz_model.Address"
+                    "$ref": "#/definitions/model.Address"
                 },
                 "email": {
                     "type": "string"

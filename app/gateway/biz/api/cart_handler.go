@@ -45,7 +45,7 @@ func AddItemHandler(serviceName string) gin.HandlerFunc {
 // @Produce json
 // @Param user body model.GetCartReq true "查询的购物车信息"
 // @Success 200 {object} common.Response "查询成功"
-// @Router /cart [get]
+// @Router /cart/get [post]
 func GetCartHandler(serviceName string) gin.HandlerFunc {
 	return func(c *gin.Context) {
 		var req model.GetCartReq

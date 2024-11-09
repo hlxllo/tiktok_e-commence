@@ -1,66 +1,4 @@
 definitions:
-  app_cart_biz_model.CartItem:
-    properties:
-      product_id:
-        type: integer
-      quantity:
-        type: integer
-    type: object
-  app_checkout_biz_model.Address:
-    properties:
-      city:
-        type: string
-      country:
-        type: string
-      state:
-        type: string
-      street_address:
-        type: string
-      zip_code:
-        type: string
-    type: object
-  app_checkout_biz_model.CreditCardInfo:
-    properties:
-      credit_card_cvv:
-        type: integer
-      credit_card_expiration_month:
-        type: integer
-      credit_card_expiration_year:
-        type: integer
-      credit_card_number:
-        type: string
-    type: object
-  app_order_biz_model.Address:
-    properties:
-      city:
-        type: string
-      country:
-        type: string
-      state:
-        type: string
-      street_address:
-        type: string
-      zip_code:
-        type: integer
-    type: object
-  app_order_biz_model.CartItem:
-    properties:
-      product_id:
-        type: integer
-      quantity:
-        type: integer
-    type: object
-  app_payment_biz_model.CreditCardInfo:
-    properties:
-      credit_card_cvv:
-        type: integer
-      credit_card_expiration_month:
-        type: integer
-      credit_card_expiration_year:
-        type: integer
-      credit_card_number:
-        type: string
-    type: object
   common.Response:
     properties:
       code:
@@ -69,19 +7,39 @@ definitions:
       message:
         type: string
     type: object
-  model.AddItemReqCopy:
+  model.AddItemReq:
     properties:
       item:
-        $ref: '#/definitions/app_cart_biz_model.CartItem'
+        $ref: '#/definitions/model.CartItem'
       user_id:
         type: integer
     type: object
-  model.ChargeReqCopy:
+  model.Address:
+    properties:
+      city:
+        type: string
+      country:
+        type: string
+      state:
+        type: string
+      street_address:
+        type: string
+      zip_code:
+        type: integer
+    type: object
+  model.CartItem:
+    properties:
+      product_id:
+        type: integer
+      quantity:
+        type: integer
+    type: object
+  model.ChargeReq:
     properties:
       amount:
         type: number
       credit_card:
-        $ref: '#/definitions/app_payment_biz_model.CreditCardInfo'
+        $ref: '#/definitions/model.CreditCardInfo'
       order_id:
         type: string
       user_id:
@@ -90,9 +48,9 @@ definitions:
   model.CheckoutReq:
     properties:
       address:
-        $ref: '#/definitions/app_checkout_biz_model.Address'
+        $ref: '#/definitions/model.Address'
       credit_card:
-        $ref: '#/definitions/app_checkout_biz_model.CreditCardInfo'
+        $ref: '#/definitions/model.CreditCardInfo'
       email:
         type: string
       firstname:
@@ -102,12 +60,23 @@ definitions:
       user_id:
         type: integer
     type: object
-  model.EmptyCartReqCopy:
+  model.CreditCardInfo:
+    properties:
+      credit_card_cvv:
+        type: integer
+      credit_card_expiration_month:
+        type: integer
+      credit_card_expiration_year:
+        type: integer
+      credit_card_number:
+        type: string
+    type: object
+  model.EmptyCartReq:
     properties:
       user_id:
         type: integer
     type: object
-  model.GetCartReqCopy:
+  model.GetCartReq:
     properties:
       user_id:
         type: integer
@@ -150,12 +119,12 @@ definitions:
       cost:
         type: number
       item:
-        $ref: '#/definitions/app_order_biz_model.CartItem'
+        $ref: '#/definitions/model.CartItem'
     type: object
   model.PlaceOrderReq:
     properties:
       address:
-        $ref: '#/definitions/app_order_biz_model.Address'
+        $ref: '#/definitions/model.Address'
       email:
         type: string
       order_items:
@@ -189,7 +158,7 @@ paths:
         name: user
         required: true
         schema:
-          $ref: '#/definitions/model.EmptyCartReqCopy'
+          $ref: '#/definitions/model.EmptyCartReq'
       produces:
       - application/json
       responses:
@@ -198,26 +167,6 @@ paths:
           schema:
             $ref: '#/definitions/common.Response'
       summary: 删除购物车api
-      tags:
-      - 购物车服务
-    get:
-      consumes:
-      - application/json
-      parameters:
-      - description: 查询的购物车信息
-        in: body
-        name: user
-        required: true
-        schema:
-          $ref: '#/definitions/model.GetCartReqCopy'
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: 查询成功
-          schema:
-            $ref: '#/definitions/common.Response'
-      summary: 查询购物车api
       tags:
       - 购物车服务
     post:
@@ -229,7 +178,7 @@ paths:
         name: user
         required: true
         schema:
-          $ref: '#/definitions/model.AddItemReqCopy'
+          $ref: '#/definitions/model.AddItemReq'
       produces:
       - application/json
       responses:
@@ -238,6 +187,27 @@ paths:
           schema:
             $ref: '#/definitions/common.Response'
       summary: 新增购物车api
+      tags:
+      - 购物车服务
+  /cart/get:
+    post:
+      consumes:
+      - application/json
+      parameters:
+      - description: 查询的购物车信息
+        in: body
+        name: user
+        required: true
+        schema:
+          $ref: '#/definitions/model.GetCartReq'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: 查询成功
+          schema:
+            $ref: '#/definitions/common.Response'
+      summary: 查询购物车api
       tags:
       - 购物车服务
   /checkout:
@@ -282,26 +252,6 @@ paths:
       summary: 标记订单为已完成api
       tags:
       - 订单服务
-    get:
-      consumes:
-      - application/json
-      parameters:
-      - description: 查询的订单信息
-        in: body
-        name: user
-        required: true
-        schema:
-          $ref: '#/definitions/model.ListOrderReq'
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: 查询成功
-          schema:
-            $ref: '#/definitions/common.Response'
-      summary: 批量查询订单api
-      tags:
-      - 订单服务
     post:
       consumes:
       - application/json
@@ -322,6 +272,27 @@ paths:
       summary: 创建订单api
       tags:
       - 订单服务
+  /order/list:
+    post:
+      consumes:
+      - application/json
+      parameters:
+      - description: 查询的订单信息
+        in: body
+        name: user
+        required: true
+        schema:
+          $ref: '#/definitions/model.ListOrderReq'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: 查询成功
+          schema:
+            $ref: '#/definitions/common.Response'
+      summary: 批量查询订单api
+      tags:
+      - 订单服务
   /payment:
     post:
       consumes:
@@ -332,7 +303,7 @@ paths:
         name: user
         required: true
         schema:
-          $ref: '#/definitions/model.ChargeReqCopy'
+          $ref: '#/definitions/model.ChargeReq'
       produces:
       - application/json
       responses:
@@ -344,7 +315,7 @@ paths:
       tags:
       - 支付服务
   /product:
-    get:
+    post:
       consumes:
       - application/json
       parameters:
@@ -365,7 +336,7 @@ paths:
       tags:
       - 商品服务
   /product/list:
-    get:
+    post:
       consumes:
       - application/json
       parameters:
