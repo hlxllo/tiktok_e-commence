@@ -15,18 +15,21 @@ import (
 // @Param user body model.ChargeReqCopy true "创建的支付信息"
 // @Success 200 {object} common.Response "创建成功"
 // @Router /payment [post]
-func ChargeHandler(client model.PaymentServiceClient) gin.HandlerFunc {
+func ChargeHandler(serviceName string) gin.HandlerFunc {
 	return func(c *gin.Context) {
 		var req model.ChargeReq
-		// 绑定参数
 		err := c.ShouldBindJSON(&req)
 		if err != nil {
 			common.HandleResponse(c, http.StatusBadRequest, common.ErrInvalidParam, nil)
 			return
 		}
-		// 打印请求参数以便调试
+		conn, err := common.CallService(c, serviceName)
+		if err != nil {
+			return
+		}
+		defer conn.Close()
+		client := model.NewPaymentServiceClient(conn)
 		log.Printf("Request: %+v", req)
-		// 调用rpc分页查询
 		resp, err := client.Charge(c, &req)
 		if err != nil {
 			common.HandleError(c, err)

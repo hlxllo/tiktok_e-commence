@@ -5,8 +5,9 @@ import (
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
 	"gorm.io/gorm"
-	"tiktok_e-commence/app/user/biz/model"
+	model2 "tiktok_e-commence/app/user/biz/model"
 	"tiktok_e-commence/common"
+	"tiktok_e-commence/common/model/model"
 )
 
 // 实现服务端接口
@@ -20,8 +21,8 @@ func (s *UserServer) Register(c context.Context, req *model.RegisterReq) (*model
 		// 参数错误
 		return nil, status.Errorf(codes.InvalidArgument, common.ErrPasswordMismatch)
 	}
-	user := &model.User{Email: req.Email, Password: req.Password}
-	userId, err := model.CreateUser(user)
+	user := &model2.User{Email: req.Email, Password: req.Password}
+	userId, err := model2.CreateUser(user)
 	if err != nil {
 		// 重复添加
 		return nil, status.Errorf(codes.AlreadyExists, common.ErrUserExists)
@@ -31,8 +32,8 @@ func (s *UserServer) Register(c context.Context, req *model.RegisterReq) (*model
 
 // 实现 Login
 func (s *UserServer) Login(c context.Context, req *model.LoginReq) (*model.LoginResp, error) {
-	queryUser := &model.User{Email: req.Email, Password: req.Password}
-	user, err := model.SelectUser(queryUser)
+	queryUser := &model2.User{Email: req.Email, Password: req.Password}
+	user, err := model2.SelectUser(queryUser)
 	if err != nil {
 		// 没有用户
 		return nil, status.Errorf(codes.NotFound, common.ErrLoginFailed)
@@ -42,8 +43,8 @@ func (s *UserServer) Login(c context.Context, req *model.LoginReq) (*model.Login
 
 // 实现 GetUserInfo  TODO 待测试
 func (s *UserServer) GetUserInfo(c context.Context, req *model.GetUserInfoReq) (*model.GetUserInfoResp, error) {
-	queryUser := &model.User{Model: gorm.Model{ID: uint(req.UserId)}, Email: req.Email}
-	user, err := model.SelectUser(queryUser)
+	queryUser := &model2.User{Model: gorm.Model{ID: uint(req.UserId)}, Email: req.Email}
+	user, err := model2.SelectUser(queryUser)
 	if err != nil {
 		// 没有用户
 		return nil, status.Errorf(codes.NotFound, common.ErrUserNotFound)

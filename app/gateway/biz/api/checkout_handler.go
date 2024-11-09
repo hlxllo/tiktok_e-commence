@@ -8,26 +8,30 @@ import (
 	"tiktok_e-commence/common/model/model"
 )
 
-// @Summary 创建支付记录api
-// @Tags 支付服务
+// @Summary 创建结算记录api
+// @Tags 结算服务
 // @Accept json
 // @Produce json
-// @Param user body model.ChargeReqCopy true "创建的支付信息"
+// @Param user body model.CheckoutReq true "创建的结算信息"
 // @Success 200 {object} common.Response "创建成功"
-// @Router /payment [post]
-func ChargeHandler(client model.PaymentServiceClient) gin.HandlerFunc {
+// @Router /checkout [post]
+func CheckoutHandler(serviceName string) gin.HandlerFunc {
 	return func(c *gin.Context) {
-		var req model.ChargeReq
-		// 绑定参数
+		var req model.CheckoutReq
+		// TODO 参数格式不对
 		err := c.ShouldBindJSON(&req)
 		if err != nil {
 			common.HandleResponse(c, http.StatusBadRequest, common.ErrInvalidParam, nil)
 			return
 		}
-		// 打印请求参数以便调试
+		conn, err := common.CallService(c, serviceName)
+		if err != nil {
+			return
+		}
+		defer conn.Close()
+		client := model.NewCheckoutServiceClient(conn)
 		log.Printf("Request: %+v", req)
-		// 调用rpc分页查询
-		resp, err := client.Charge(c, &req)
+		resp, err := client.Checkout(c, &req)
 		if err != nil {
 			common.HandleError(c, err)
 			return

@@ -4,8 +4,9 @@ import (
 	"context"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
-	"tiktok_e-commence/app/cart/biz/model"
+	model2 "tiktok_e-commence/app/cart/biz/model"
 	"tiktok_e-commence/common"
+	"tiktok_e-commence/common/model/model"
 )
 
 // 实现服务端接口
@@ -15,12 +16,12 @@ type CartServer struct {
 
 // 实现 AddItem
 func (s *CartServer) AddItem(c context.Context, req *model.AddItemReq) (*model.AddItemResp, error) {
-	po := &model.CartPo{}
+	po := &model2.CartPo{}
 	po.UserId = req.UserId
 	po.ProductId = req.Item.ProductId
 	po.Quantity = req.Item.Quantity
 	// 添加购物车
-	_, err := model.CreateCart(po)
+	_, err := model2.CreateCart(po)
 	if err != nil {
 		return nil, status.Errorf(codes.AlreadyExists, common.ErrCartExists)
 	}
@@ -29,9 +30,9 @@ func (s *CartServer) AddItem(c context.Context, req *model.AddItemReq) (*model.A
 
 // 实现 GetCart
 func (s *CartServer) GetCart(c context.Context, req *model.GetCartReq) (*model.GetCartResp, error) {
-	po := &model.CartPo{UserId: req.UserId}
+	po := &model2.CartPo{UserId: req.UserId}
 	// 批量查询
-	cartPos := model.SelectCarts(po)
+	cartPos := model2.SelectCarts(po)
 	var items []*model.CartItem
 	for _, cartPo := range cartPos {
 		item := &model.CartItem{}
@@ -45,7 +46,7 @@ func (s *CartServer) GetCart(c context.Context, req *model.GetCartReq) (*model.G
 
 // 实现 EmptyCart
 func (s *CartServer) EmptyCart(c context.Context, req *model.EmptyCartReq) (*model.EmptyCartResp, error) {
-	po := &model.CartPo{UserId: req.UserId}
-	model.DeleteCarts(po)
+	po := &model2.CartPo{UserId: req.UserId}
+	model2.DeleteCarts(po)
 	return &model.EmptyCartResp{}, nil
 }

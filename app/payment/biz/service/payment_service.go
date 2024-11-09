@@ -6,9 +6,9 @@ import (
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
 	"strconv"
-	model2 "tiktok_e-commence/app/order/biz/model"
-	"tiktok_e-commence/app/payment/biz/model"
+	model2 "tiktok_e-commence/app/payment/biz/model"
 	"tiktok_e-commence/common"
+	"tiktok_e-commence/common/model/model"
 )
 
 type PaymentServer struct {
@@ -25,19 +25,19 @@ func (s *PaymentServer) Charge(c context.Context, req *model.ChargeReq) (*model.
 	}
 	conn, err := common.CreateGRPCConn(instances.Ip, int(instances.Port))
 	defer conn.Close()
-	orderClient := model2.NewOrderServiceClient(conn)
-	orderResp, _ := orderClient.ListOrder(c, &model2.ListOrderReq{UserId: userId})
+	orderClient := model.NewOrderServiceClient(conn)
+	orderResp, _ := orderClient.ListOrder(c, &model.ListOrderReq{UserId: userId})
 	orders := orderResp.Orders
 	if len(orders) == 0 {
 		return nil, status.Errorf(codes.NotFound, common.ErrOrderNotFound)
 	}
 	// 存在则继续
-	po := &model.PaymentPo{}
+	po := &model2.PaymentPo{}
 	po.Amount = req.Amount
 	po.OrderId = req.OrderId
 	po.UserId = req.UserId
 	card, _ := json.Marshal(req.CreditCard)
 	po.CreditCard = card
-	id := model.CreatePayment(po)
+	id := model2.CreatePayment(po)
 	return &model.ChargeResp{TransactionId: strconv.Itoa(int(id))}, nil
 }

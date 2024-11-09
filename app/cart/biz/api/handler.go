@@ -4,8 +4,8 @@ import (
 	"github.com/gin-gonic/gin"
 	"log"
 	"net/http"
-	"tiktok_e-commence/app/cart/biz/model"
 	"tiktok_e-commence/common"
+	"tiktok_e-commence/common/model/model"
 )
 
 // @Summary 新增购物车api

@@ -4,10 +4,9 @@ import (
 	"context"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
-	"tiktok_e-commence/app/auth/biz/model"
 	"tiktok_e-commence/app/auth/biz/utils"
-	model2 "tiktok_e-commence/app/user/biz/model"
 	"tiktok_e-commence/common"
+	"tiktok_e-commence/common/model/model"
 )
 
 // 实现服务端接口
@@ -24,7 +23,7 @@ func (s *AuthServer) DeliverTokenByRPC(c context.Context, req *model.DeliverToke
 	return &model.DeliveryResp{Token: token}, nil
 }
 
-// 实现 VerifyTokenByRPC TODO 待测试
+// 实现 VerifyTokenByRPC
 func (s *AuthServer) VerifyTokenByRPC(c context.Context, req *model.VerifyTokenReq) (*model.VerifyResp, error) {
 	resp := &model.VerifyResp{Res: false}
 	// 解析jwt
@@ -33,16 +32,16 @@ func (s *AuthServer) VerifyTokenByRPC(c context.Context, req *model.VerifyTokenR
 		return resp, status.Errorf(codes.Internal, common.ErrVerifyJWTFailed)
 	}
 	// 获取用户id
-	id := claims["id"].(int32)
+	id := claims["id"].(float64)
 	instances, err := common.SelectHealthyInstance("user-server")
 	if err != nil {
 		return resp, status.Errorf(codes.Internal, common.ErrDiscoverServiceFailed)
 	}
 	conn, err := common.CreateGRPCConn(instances.Ip, int(instances.Port))
 	defer conn.Close()
-	userClient := model2.NewUserServiceClient(conn)
+	userClient := model.NewUserServiceClient(conn)
 	// 根据 id 查询用户信息
-	_, err = userClient.GetUserInfo(c, &model2.GetUserInfoReq{UserId: id})
+	_, err = userClient.GetUserInfo(c, &model.GetUserInfoReq{UserId: int32(id)})
 	if err != nil {
 		return resp, status.Errorf(codes.NotFound, common.ErrUserNotFound)
 	}

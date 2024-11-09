@@ -15,18 +15,21 @@ import (
 // @Param user body model.ListProductsReq true "查询的商品和分页信息"
 // @Success 200 {object} common.Response "查询成功"
 // @Router /product/list [get]
-func ListProductsHandler(client model.ProductCatalogServiceClient) gin.HandlerFunc {
+func ListProductsHandler(serviceName string) gin.HandlerFunc {
 	return func(c *gin.Context) {
 		var req model.ListProductsReq
-		// 绑定参数
 		err := c.ShouldBindJSON(&req)
 		if err != nil {
 			common.HandleResponse(c, http.StatusBadRequest, common.ErrInvalidParam, nil)
 			return
 		}
-		// 打印请求参数以便调试
+		conn, err := common.CallService(c, serviceName)
+		if err != nil {
+			return
+		}
+		defer conn.Close()
+		client := model.NewProductCatalogServiceClient(conn)
 		log.Printf("Request: %+v", req)
-		// 调用rpc分页查询
 		resp, err := client.ListProducts(c, &req)
 		if err != nil {
 			common.HandleError(c, err)
@@ -43,18 +46,21 @@ func ListProductsHandler(client model.ProductCatalogServiceClient) gin.HandlerFu
 // @Param user body model.GetProductReq true "查询的商品 id"
 // @Success 200 {object} common.Response "查询成功"
 // @Router /product [get]
-func GetProductHandler(client model.ProductCatalogServiceClient) gin.HandlerFunc {
+func GetProductHandler(serviceName string) gin.HandlerFunc {
 	return func(c *gin.Context) {
 		var req model.GetProductReq
-		// 绑定参数
 		err := c.ShouldBindJSON(&req)
 		if err != nil {
 			common.HandleResponse(c, http.StatusBadRequest, common.ErrInvalidParam, nil)
 			return
 		}
-		// 打印请求参数以便调试
+		conn, err := common.CallService(c, serviceName)
+		if err != nil {
+			return
+		}
+		defer conn.Close()
+		client := model.NewProductCatalogServiceClient(conn)
 		log.Printf("Request: %+v", req)
-		// 调用rpc分页查询
 		resp, err := client.GetProduct(c, &req)
 		if err != nil {
 			common.HandleError(c, err)

@@ -8,9 +8,9 @@ import (
 	"log"
 	"tiktok_e-commence/app/cart/biz/api"
 	"tiktok_e-commence/app/cart/biz/dal"
-	"tiktok_e-commence/app/cart/biz/model"
 	"tiktok_e-commence/app/cart/biz/server"
 	"tiktok_e-commence/common"
+	"tiktok_e-commence/common/model/model"
 	"tiktok_e-commence/docs"
 )
 

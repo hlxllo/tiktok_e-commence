@@ -27,4 +27,9 @@ const (
 	MsgUpdateSuccess       = "修改成功！"
 	MsgLoginSuccess        = "登录成功！"
 	MsgSuccess             = "success"
+
+	// 设置最大发送消息大小为100MB
+	MaxSendMsgSize = 100 * 1024 * 1024
+	// 设置最大接收消息大小为100MB
+	MaxRecvMsgSize = 100 * 1024 * 1024
 )

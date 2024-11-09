@@ -3,6 +3,7 @@ package model
 import (
 	"gorm.io/gorm"
 	"tiktok_e-commence/app/cart/biz/dal/mysql"
+	"tiktok_e-commence/common/model/model"
 )
 
 type CartPo struct {
@@ -15,15 +16,15 @@ type CartPo struct {
 
 // 服了，神奇 bug TODO
 type AddItemReqCopy struct {
-	AddItemReq
+	model.AddItemReq
 }
 
 type GetCartReqCopy struct {
-	GetCartReq
+	model.GetCartReq
 }
 
 type EmptyCartReqCopy struct {
-	EmptyCartReq
+	model.EmptyCartReq
 }
 
 func (table *CartPo) TableName() string {

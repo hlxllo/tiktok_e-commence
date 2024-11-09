@@ -3,6 +3,7 @@ package model
 import (
 	"gorm.io/gorm"
 	"tiktok_e-commence/app/payment/biz/dal/mysql"
+	"tiktok_e-commence/common/model/model"
 )
 
 type PaymentPo struct {
@@ -14,7 +15,7 @@ type PaymentPo struct {
 }
 
 type ChargeReqCopy struct {
-	ChargeReq
+	model.ChargeReq
 }
 
 func (table *PaymentPo) TableName() string {

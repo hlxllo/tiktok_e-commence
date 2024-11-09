@@ -6,9 +6,9 @@ import (
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
 	"strconv"
-	"tiktok_e-commence/app/checkout/biz/model"
-	model2 "tiktok_e-commence/app/order/biz/model"
+	model2 "tiktok_e-commence/app/checkout/biz/model"
 	"tiktok_e-commence/common"
+	"tiktok_e-commence/common/model/model"
 )
 
 type CheckoutServer struct {
@@ -25,8 +25,8 @@ func (s *CheckoutServer) Checkout(c context.Context, req *model.CheckoutReq) (*m
 	}
 	conn, err := common.CreateGRPCConn(instances.Ip, int(instances.Port))
 	defer conn.Close()
-	orderClient := model2.NewOrderServiceClient(conn)
-	orderResp, _ := orderClient.ListOrder(c, &model2.ListOrderReq{UserId: userId})
+	orderClient := model.NewOrderServiceClient(conn)
+	orderResp, _ := orderClient.ListOrder(c, &model.ListOrderReq{UserId: userId})
 	orders := orderResp.Orders
 	if len(orders) == 0 {
 		return nil, status.Errorf(codes.NotFound, common.ErrOrderNotFound)
@@ -35,7 +35,7 @@ func (s *CheckoutServer) Checkout(c context.Context, req *model.CheckoutReq) (*m
 	resp := &model.CheckoutResp{}
 	resp.OrderId = orders[0].OrderId
 	// 再保存数据，返回结果
-	po := &model.CheckoutPo{}
+	po := &model2.CheckoutPo{}
 	po.UserId = req.UserId
 	po.Email = req.Email
 	po.Firstname = req.Firstname
@@ -45,6 +45,6 @@ func (s *CheckoutServer) Checkout(c context.Context, req *model.CheckoutReq) (*m
 	po.Address = addr
 	po.CreditCard = card
 	// 添加数据
-	resp.TransactionId = strconv.Itoa(int(model.CreateCheckout(po)))
+	resp.TransactionId = strconv.Itoa(int(model2.CreateCheckout(po)))
 	return resp, nil
 }
