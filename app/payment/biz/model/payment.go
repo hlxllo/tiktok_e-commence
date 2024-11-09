@@ -3,7 +3,6 @@ package model
 import (
 	"gorm.io/gorm"
 	"tiktok_e-commence/app/payment/biz/dal/mysql"
-	"tiktok_e-commence/common/model/model"
 )
 
 type PaymentPo struct {
@@ -12,10 +11,6 @@ type PaymentPo struct {
 	CreditCard []byte `gorm:"type:json"`
 	OrderId    string
 	UserId     uint32
-}
-
-type ChargeReqCopy struct {
-	model.ChargeReq
 }
 
 func (table *PaymentPo) TableName() string {

@@ -3,7 +3,6 @@ package model
 import (
 	"gorm.io/gorm"
 	"tiktok_e-commence/app/cart/biz/dal/mysql"
-	"tiktok_e-commence/common/model/model"
 )
 
 type CartPo struct {
@@ -12,19 +11,6 @@ type CartPo struct {
 	UserId    uint32 `gorm:"uniqueIndex:idx_user_product"`
 	ProductId uint32 `gorm:"type:bigint unsigned;uniqueIndex:idx_user_product"`
 	Quantity  int32
-}
-
-// 服了，神奇 bug TODO
-type AddItemReqCopy struct {
-	model.AddItemReq
-}
-
-type GetCartReqCopy struct {
-	model.GetCartReq
-}
-
-type EmptyCartReqCopy struct {
-	model.EmptyCartReq
 }
 
 func (table *CartPo) TableName() string {

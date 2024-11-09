@@ -12,7 +12,7 @@ import (
 // @Tags 购物车服务
 // @Accept json
 // @Produce json
-// @Param user body model.AddItemReqCopy true "新增的购物车信息"
+// @Param user body model.AddItemReq true "新增的购物车信息"
 // @Success 200 {object} common.Response "新增成功"
 // @Router /cart [post]
 func AddItemHandler(serviceName string) gin.HandlerFunc {
@@ -43,7 +43,7 @@ func AddItemHandler(serviceName string) gin.HandlerFunc {
 // @Tags 购物车服务
 // @Accept json
 // @Produce json
-// @Param user body model.GetCartReqCopy true "查询的购物车信息"
+// @Param user body model.GetCartReq true "查询的购物车信息"
 // @Success 200 {object} common.Response "查询成功"
 // @Router /cart [get]
 func GetCartHandler(serviceName string) gin.HandlerFunc {
@@ -74,7 +74,7 @@ func GetCartHandler(serviceName string) gin.HandlerFunc {
 // @Tags 购物车服务
 // @Accept json
 // @Produce json
-// @Param user body model.EmptyCartReqCopy true "删除的购物车信息"
+// @Param user body model.EmptyCartReq true "删除的购物车信息"
 // @Success 200 {object} common.Response "删除成功"
 // @Router /cart [delete]
 func EmptyCartHandler(serviceName string) gin.HandlerFunc {

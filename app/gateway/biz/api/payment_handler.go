@@ -12,7 +12,7 @@ import (
 // @Tags 支付服务
 // @Accept json
 // @Produce json
-// @Param user body model.ChargeReqCopy true "创建的支付信息"
+// @Param user body model.ChargeReq true "创建的支付信息"
 // @Success 200 {object} common.Response "创建成功"
 // @Router /payment [post]
 func ChargeHandler(serviceName string) gin.HandlerFunc {
