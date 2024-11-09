@@ -9,6 +9,7 @@ const (
 	ErrUserNotFound          = "用户不存在！"
 	ErrOrderNotFound         = "订单不存在！"
 	ErrPasswordMismatch      = "密码不一致！"
+	ErrGRPCConnFailed        = "grpc连接失败！"
 	ErrUserCreationFailed    = "用户注册失败！"
 	ErrLoginFailed           = "登录失败！"
 	ErrEncryptionFailed      = "密码加密失败！"
