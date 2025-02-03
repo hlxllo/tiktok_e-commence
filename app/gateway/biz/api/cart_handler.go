@@ -5,6 +5,7 @@ import (
 	"log"
 	"net/http"
 	"tiktok_e-commence/common"
+	"tiktok_e-commence/common/circuitbreaker"
 	"tiktok_e-commence/common/model/model"
 )
 
@@ -16,6 +17,8 @@ import (
 // @Success 200 {object} common.Response "新增成功"
 // @Router /cart [post]
 func AddItemHandler(serviceName string) gin.HandlerFunc {
+	// 使用断路器
+	cb := circuitbreaker.NewCircuitBreaker(serviceName)
 	return func(c *gin.Context) {
 		var req model.AddItemReq
 		err := c.ShouldBindJSON(&req)
@@ -30,9 +33,11 @@ func AddItemHandler(serviceName string) gin.HandlerFunc {
 		defer conn.Close()
 		client := model.NewCartServiceClient(conn)
 		log.Printf("Request: %+v", req)
-		resp, err := client.AddItem(c, &req)
+		resp, err := cb.Execute(func() (interface{}, error) {
+			return client.AddItem(c, &req)
+		})
 		if err != nil {
-			common.HandleError(c, err)
+			common.HandleCircuitBreakerError(c, err)
 			return
 		}
 		common.HandleResponse(c, http.StatusOK, common.MsgSuccess, resp)
@@ -47,6 +52,7 @@ func AddItemHandler(serviceName string) gin.HandlerFunc {
 // @Success 200 {object} common.Response "查询成功"
 // @Router /cart/get [post]
 func GetCartHandler(serviceName string) gin.HandlerFunc {
+	cb := circuitbreaker.NewCircuitBreaker(serviceName)
 	return func(c *gin.Context) {
 		var req model.GetCartReq
 		err := c.ShouldBindJSON(&req)
@@ -61,9 +67,11 @@ func GetCartHandler(serviceName string) gin.HandlerFunc {
 		defer conn.Close()
 		client := model.NewCartServiceClient(conn)
 		log.Printf("Request: %+v", req)
-		resp, err := client.GetCart(c, &req)
+		resp, err := cb.Execute(func() (interface{}, error) {
+			return client.GetCart(c, &req)
+		})
 		if err != nil {
-			common.HandleError(c, err)
+			common.HandleCircuitBreakerError(c, err)
 			return
 		}
 		common.HandleResponse(c, http.StatusOK, common.MsgSuccess, resp)
@@ -78,6 +86,7 @@ func GetCartHandler(serviceName string) gin.HandlerFunc {
 // @Success 200 {object} common.Response "删除成功"
 // @Router /cart [delete]
 func EmptyCartHandler(serviceName string) gin.HandlerFunc {
+	cb := circuitbreaker.NewCircuitBreaker(serviceName)
 	return func(c *gin.Context) {
 		var req model.EmptyCartReq
 		err := c.ShouldBindJSON(&req)
@@ -92,9 +101,11 @@ func EmptyCartHandler(serviceName string) gin.HandlerFunc {
 		defer conn.Close()
 		client := model.NewCartServiceClient(conn)
 		log.Printf("Request: %+v", req)
-		resp, err := client.EmptyCart(c, &req)
+		resp, err := cb.Execute(func() (interface{}, error) {
+			return client.EmptyCart(c, &req)
+		})
 		if err != nil {
-			common.HandleError(c, err)
+			common.HandleCircuitBreakerError(c, err)
 			return
 		}
 		common.HandleResponse(c, http.StatusOK, common.MsgSuccess, resp)

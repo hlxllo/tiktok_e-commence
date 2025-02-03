@@ -20,6 +20,7 @@ const (
 	ErrVerifyJWTFailed       = "验证令牌失败！"
 	ErrDiscoverServiceFailed = "发现服务失败！"
 	ErrFindEmailFailed       = "邮箱未找到！"
+	ErrServiceUnavailable    = "服务不可用！"
 
 	MsgRegistrationSuccess = "注册成功！"
 	MsgSelectionSuccess    = "查询成功！"
@@ -28,8 +29,8 @@ const (
 	MsgLoginSuccess        = "登录成功！"
 	MsgSuccess             = "success"
 
-	// 设置最大发送消息大小为100MB
-	MaxSendMsgSize = 100 * 1024 * 1024
-	// 设置最大接收消息大小为100MB
-	MaxRecvMsgSize = 100 * 1024 * 1024
+	// 设置最大发送消息大小为1GB
+	MaxSendMsgSize = 1024 * 1024 * 1024
+	// 设置最大接收消息大小为1GB
+	MaxRecvMsgSize = 1024 * 1024 * 1024
 )

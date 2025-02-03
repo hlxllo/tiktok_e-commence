@@ -2,6 +2,7 @@ package common
 
 import (
 	"github.com/gin-gonic/gin"
+	"github.com/sony/gobreaker"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
 	"net/http"
@@ -24,4 +25,13 @@ func HandleError(c *gin.Context, err error) {
 	} else {
 		HandleResponse(c, http.StatusInternalServerError, err.Error(), nil)
 	}
+}
+
+// 断路器错误处理函数
+func HandleCircuitBreakerError(c *gin.Context, err error) {
+	if err == gobreaker.ErrOpenState {
+		HandleResponse(c, http.StatusServiceUnavailable, ErrServiceUnavailable, nil)
+		return
+	}
+	HandleError(c, err)
 }

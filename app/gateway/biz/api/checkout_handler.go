@@ -18,7 +18,7 @@ import (
 func CheckoutHandler(serviceName string) gin.HandlerFunc {
 	return func(c *gin.Context) {
 		var req model.CheckoutReq
-		// TODO 参数格式不对
+		// TODO 还有问题
 		err := c.ShouldBindJSON(&req)
 		if err != nil {
 			common.HandleResponse(c, http.StatusBadRequest, common.ErrInvalidParam, nil)
